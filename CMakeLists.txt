@@ -36,6 +36,10 @@ set(SOURCE_TARGET_NAME "source")
 include(gamecube.macro)
 add_subdirectory(source)
 
+# elf2dol - .dol executable
+include(gamecube.elf2dol)
+add_dol_target(${PROJECT_NAME} ${SOURCE_TARGET_NAME} "FALSE" "source/${SOURCE_TARGET_NAME}")
+
 # from gamecube_rules
 ##---------------------------------------------------------------------------------
 #%.dol: %.elf
