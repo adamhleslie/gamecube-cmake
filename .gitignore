@@ -1,0 +1,10 @@
+# Visual Studio
+.vs/
+!.vs/launch.vs.json
+
+# CLion
+.idea/
+
+# Project output
+gen/
+out/

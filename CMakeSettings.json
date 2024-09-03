@@ -1,0 +1,53 @@
+﻿{
+    "environments": [
+        {
+            "DEVKITPRO": "/opt/devkitpro",
+            "PROJECT": // "PROJECT NAME HERE",
+            "desmumeExe": // "WINDOWS PATH TO DESMUME-DEV+ EXECUTABLE",
+            "gdbExe": // "WINDOWS PATH TO GDB EXECUTABLE: C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\Common7\\IDE\\VC\\Linux\\bin\\gdb\\8.1\\arm-linux-gnueabihf-gdb.exe",
+            "gdbPort": "3333"
+        }
+    ],
+    "configurations": [
+        {
+            "name": "WSL-NDS-Debug",
+            "generator": "Unix Makefiles",
+            "configurationType": "Debug",
+            "buildRoot": "${projectDir}\\out\\build\\${name}",
+            "installRoot": "${projectDir}\\out\\install\\${name}",
+            "cmakeExecutable": "/usr/local/bin/cmake",
+            "inheritEnvironments": [ "linux_arm" ],
+            "wslPath": "${defaultWSLPath}",
+            "addressSanitizerRuntimeFlags": "detect_leaks=0",
+            "remoteCopyUseCompilerDefaults": true,
+            "environments": [
+                {
+                    "arm9Exe": "${projectDir}\\out\\build\\WSL-NDS-Debug\\arm9\\arm9.elf",
+                    "arm7Exe": "${projectDir}\\out\\build\\WSL-NDS-Debug\\arm7\\arm7.elf",
+                    "ndsExe": "${projectDir}\\out\\build\\WSL-NDS-Debug\\${env.PROJECT}.nds"
+                }
+            ],
+            "cmakeToolchain": "${projectDir}\\cmake\\toolchain.nds.cmake"
+        },
+        {
+            "name": "WSL-NDS-Release",
+            "generator": "Unix Makefiles",
+            "configurationType": "Release",
+            "buildRoot": "${projectDir}\\out\\build\\${name}",
+            "installRoot": "${projectDir}\\out\\install\\${name}",
+            "cmakeExecutable": "/usr/local/bin/cmake",
+            "inheritEnvironments": [ "linux_arm" ],
+            "wslPath": "${defaultWSLPath}",
+            "addressSanitizerRuntimeFlags": "detect_leaks=0",
+            "remoteCopyUseCompilerDefaults": true,
+            "environments": [
+                {
+                    "arm9Exe": "${projectDir}\\out\\build\\WSL-NDS-Release\\arm9\\arm9.elf",
+                    "arm7Exe": "${projectDir}\\out\\build\\WSL-NDS-Release\\arm7\\arm7.elf",
+                    "ndsExe": "${projectDir}\\out\\build\\WSL-NDS-Release\\${env.PROJECT}.nds"
+                }
+            ],
+            "cmakeToolchain": "${projectDir}\\cmake\\toolchain.nds.cmake"
+        }
+    ]
+}
