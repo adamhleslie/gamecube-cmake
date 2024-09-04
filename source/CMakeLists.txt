@@ -8,4 +8,4 @@ add_executable(${SOURCE_TARGET_NAME}
 set(source_libogc_libs
         ogc)
 
-setup_wii_target("${SOURCE_TARGET_NAME}" "${source_libogc_libs}")
+setup_gamecube_target("${SOURCE_TARGET_NAME}" "${source_libogc_libs}")
