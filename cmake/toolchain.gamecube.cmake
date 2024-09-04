@@ -5,7 +5,7 @@ set(CMAKE_SYSTEM_VERSION 1)
 # Target architecture to build for
 set(CMAKE_SYSTEM_PROCESSOR ppc)
 
-# Get devkitPro, devkitPPC, and LibOGC from environment
+# Get devkitPro from the environment
 if(NOT DEFINED ENV{DEVKITPRO})
     message(FATAL_ERROR "Please set DEVKITPRO in your environment")
 endif()

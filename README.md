@@ -1,9 +1,9 @@
 # TODO
-- Compiler Flags - Put into set_gamecube_target macro, like arm7 and arm9 macros set LINKER and COMPILER flags based on nds makefiles
-- Targets
-- elf2dol, gxtexconv
 - Binary Data w/ bin2o, a la grit
+- Rename bin2o and gxtexconv inputs function inputs and vars away from gen/include dichotomy, and towards more clear and specific naming
 - Generate linker map file
+- Dolphin gdb stub run command
+- Readme :)
 
 # nds-cmake
 Homebrew Nintendo DS build system

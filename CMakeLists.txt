@@ -30,6 +30,22 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} ${warning_flags} ${cpp_flags} ${de
 set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS} ${warning_flags} ${release_flags}")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} ${warning_flags} ${cpp_flags} ${release_flags}")
 
+# PROJECT - ASSETS #
+#set(ASSETS_PATH "${CMAKE_SOURCE_DIR}/assets")
+#set(ASSETS_GEN "${CMAKE_BINARY_DIR}/assets")
+#set(ASSETS_INCLUDE "${ASSETS_GEN}/include")
+#include_directories(${ASSETS_INCLUDE})
+
+# gxtexconv - Textures
+#include(gamecube.gxtexconv)
+#set(GXTEXCONV_TARGET_NAME "assets_textures_gxtexconv")
+#add_gxtexconv_target(${GXTEXCONV_TARGET_NAME} "${ASSETS_PATH}/textures" ${ASSETS_GEN} ${ASSETS_INCLUDE})
+
+# bin2s - Binary Files
+#include(gamecube.bin2s)
+#set(BIN2O_TARGET_NAME "assets_textures_bin2o")
+#add_bin2o_target(${BIN2O_TARGET_NAME} ${${GXTEXCONV_TARGET_NAME}_TPL} ${ASSETS_GEN} ${ASSETS_INCLUDE})
+
 ## PROJECT - CODE #
 set(SOURCE_TARGET_NAME "source")
 
@@ -39,31 +55,3 @@ add_subdirectory(source)
 # elf2dol - .dol executable
 include(gamecube.elf2dol)
 add_dol_target(${PROJECT_NAME} ${SOURCE_TARGET_NAME} "FALSE" "source/${SOURCE_TARGET_NAME}")
-
-# from gamecube_rules
-##---------------------------------------------------------------------------------
-#%.dol: %.elf
-#$(SILENTMSG) output ... $(notdir $@)
-#$(SILENTCMD)elf2dol $< $@
-#
-##---------------------------------------------------------------------------------
-#%.tpl : %.scf
-#$(SILENTMSG) $(notdir $<)
-#$(SILENTCMD)gxtexconv -s $< -d $(DEPSDIR)/$*.d -o $@
-#
-##---------------------------------------------------------------------------------
-#%.elf:
-#$(SILENTMSG) linking ... $(notdir $@)
-#$(ADD_COMPILE_COMMAND) end
-#$(SILENTCMD)$(LD)  $^ $(LDFLAGS) $(LIBPATHS) $(LIBS) -o $@
-
-# bin2o from base_tools:
-##---------------------------------------------------------------------------------
-## canned command sequence for binary data
-##---------------------------------------------------------------------------------
-#define bin2o
-#$(eval _tmpasm := $(shell mktemp))
-#$(SILENTCMD)bin2s -a 32 -H `(echo $(<F) | tr . _)`.h $< > $(_tmpasm)
-#$(SILENTCMD)$(CC) -x assembler-with-cpp $(CPPFLAGS) $(ASFLAGS) -c $(_tmpasm) -o $(<F).o
-#@rm $(_tmpasm)
-#endef

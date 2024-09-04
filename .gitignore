@@ -6,5 +6,5 @@
 .idea/
 
 # Project output
-gen/
+assets/gen/
 out/
