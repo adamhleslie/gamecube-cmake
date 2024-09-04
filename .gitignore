@@ -1,9 +1,9 @@
 # Visual Studio
-.vs/
+.vs/*
 !.vs/launch.vs.json
 
 # CLion
-.idea/
+.idea/*
 !.idea/cmake.xml
 
 # Project output
