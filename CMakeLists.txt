@@ -9,6 +9,8 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 # Log active toolchain
 message(STATUS "Using toolchain file: ${CMAKE_TOOLCHAIN_FILE}")
 
+option(WII_TARGET "Choose the Wii target instead of the gamecube one" TRUE)
+
 # Set the default search path for modules when using include / find_package
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 message(STATUS "Using C compiler: " ${CMAKE_C_COMPILER})
@@ -29,6 +31,7 @@ set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS} ${warning_flags} ${debug_flags}")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} ${warning_flags} ${cpp_flags} ${debug_flags}")
 set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS} ${warning_flags} ${release_flags}")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} ${warning_flags} ${cpp_flags} ${release_flags}")
+include_directories("include")
 
 # PROJECT - ASSETS #
 #set(ASSETS_PATH "${CMAKE_SOURCE_DIR}/assets")
@@ -54,4 +57,4 @@ add_subdirectory(source)
 
 # elf2dol - .dol executable
 include(gamecube.elf2dol)
-add_dol_target(${PROJECT_NAME} ${SOURCE_TARGET_NAME} "FALSE" "source/${SOURCE_TARGET_NAME}")
+add_dol_target(${PROJECT_NAME} ${SOURCE_TARGET_NAME} "TRUE" "source/${SOURCE_TARGET_NAME}")
