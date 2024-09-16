@@ -9,7 +9,7 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 # Log active toolchain
 message(STATUS "Using toolchain file: ${CMAKE_TOOLCHAIN_FILE}")
 
-option(WII_TARGET "Choose the Wii target instead of the gamecube one" TRUE)
+option(WII_TARGET "Choose the Wii target instead of the gamecube one" FALSE)
 
 # Set the default search path for modules when using include / find_package
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
