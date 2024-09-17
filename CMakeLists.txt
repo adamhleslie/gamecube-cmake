@@ -43,13 +43,13 @@ set(CMAKE_ASM_FLAGS_RELEASE "${CMAKE_ASM_FLAGS} ${warning_flags} ${release_flags
 set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS} ${warning_flags} ${release_flags}")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} ${warning_flags} ${cpp_flags} ${release_flags}")
 
-# Defines bin2s_library
+# Defines assets_bin2s_library
 add_subdirectory(assets)
 
-# Defines gamecube_executable
+# Defines source_executable
 add_subdirectory(source)
-target_link_libraries(gamecube_executable PUBLIC bin2s_library)
+target_link_libraries(source_executable PUBLIC assets_bin2s_library)
 
 # elf2dol - .dol executable
 include(devkitpro.elf2dol)
-add_dol_target(${PROJECT_NAME} gamecube_executable "FALSE" "source/gamecube_executable") # TODO: Determine approach for parameterizing copy_dol_to_source_dir option
+add_dol_custom("${PROJECT_NAME}.dol" "${PROJECT_NAME}.dol" $<TARGET_FILE:source_executable>)

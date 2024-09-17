@@ -25,7 +25,7 @@ if(GXTEXCONV_EXE)
         set(target_custom "${target}_custom")
 
         # Create target directories
-        set(out_path "${CMAKE_CURRENT_BINARY_DIR}/gxtexconv")
+        cmake_path(APPEND out_path ${CMAKE_CURRENT_BINARY_DIR} "gxtexconv")
         file(MAKE_DIRECTORY ${out_path})
 
         # Add a command to process each file with gxtexconv
@@ -33,8 +33,9 @@ if(GXTEXCONV_EXE)
 
             # Compute output files
             cmake_path(GET scf_file FILENAME scf_file_name)
-            string(REPLACE ".scf" ".h" out_file_h "${out_path}/${scf_file_name}")
-            string(REPLACE ".scf" ".tpl" out_file_tpl "${out_path}/${scf_file_name}")
+            cmake_path(APPEND out_file_base ${out_path} ${scf_file_name})
+            cmake_path(REPLACE_EXTENSION out_file_base ".h" OUTPUT_VARIABLE out_file_h)
+            cmake_path(REPLACE_EXTENSION out_file_base ".tpl" OUTPUT_VARIABLE out_file_tpl)
 
             # Append to files list
             list(APPEND out_files_h ${out_file_h})

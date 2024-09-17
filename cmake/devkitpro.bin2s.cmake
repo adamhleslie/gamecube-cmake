@@ -16,7 +16,7 @@ if(BIN2S_EXE)
     function(add_bin2s_library target binary_files)
 
         # Create target directories
-        set(out_path "${CMAKE_CURRENT_BINARY_DIR}/bin2s")
+        cmake_path(APPEND out_path ${CMAKE_CURRENT_BINARY_DIR} "bin2s")
         file(MAKE_DIRECTORY ${out_path})
 
         # Add a command to process each file with bin2s
@@ -25,9 +25,11 @@ if(BIN2S_EXE)
             # Compute output files
             cmake_path(GET binary_file STEM binary_file_stem)
             cmake_path(GET binary_file EXTENSION binary_file_extension)
-            string(REPLACE "." "_" object_suffix ${binary_file_extension})
-            set(out_file_h "${out_path}/${binary_file_stem}${object_suffix}.h")
-            set(out_file_s "${out_path}/${binary_file_stem}${object_suffix}.s")
+            string(REPLACE "." "_" out_file_suffix ${binary_file_extension})
+            cmake_path(APPEND out_file_base ${out_path} ${binary_file_stem})
+            cmake_path(APPEND_STRING out_file_base ${out_file_suffix})
+            cmake_path(REPLACE_EXTENSION out_file_base ".h" OUTPUT_VARIABLE out_file_h)
+            cmake_path(REPLACE_EXTENSION out_file_base ".s" OUTPUT_VARIABLE out_file_s)
 
             # Append to files list
             list(APPEND out_files_h ${out_file_h})
