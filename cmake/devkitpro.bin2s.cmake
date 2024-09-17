@@ -25,7 +25,6 @@ if(BIN2S_EXE)
             # Compute output files
             cmake_path(GET binary_file STEM binary_file_stem)
             cmake_path(GET binary_file EXTENSION binary_file_extension)
-            message("${binary_file} -> ${binary_file_extension}")
             string(REPLACE "." "_" object_suffix ${binary_file_extension})
             set(out_file_h "${out_path}/${binary_file_stem}${object_suffix}.h")
             set(out_file_s "${out_path}/${binary_file_stem}${object_suffix}.s")
