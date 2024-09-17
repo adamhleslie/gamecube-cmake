@@ -1,5 +1,6 @@
 # TODO
 - Continued modernization of cmake code
+  - toolchain and target_link_libogc finding of libraries
 - Branches for various template projects
 - Generate linker map file
 - Dolphin gdb stub run command
