@@ -41,7 +41,6 @@ if(BIN2S_EXE)
 
         endforeach(binary_file)
 
-        # TODO: Get toolchain / platform specific command line args added
         add_library(${target} OBJECT ${out_files_s})
         target_include_directories(${target}
                 INTERFACE ${out_path}

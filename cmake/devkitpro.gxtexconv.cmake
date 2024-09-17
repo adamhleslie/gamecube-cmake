@@ -22,7 +22,7 @@ if(GXTEXCONV_EXE)
     # TODO: Update gxtexconv to generate DEPFILE based on scf's dependent filepaths instead of relying on provided additional_dependencies
     function(add_gxtexconv_interface target scf_files additional_dependencies)
 
-        set(target_custom "${target}_custom_target")
+        set(target_custom "${target}_custom")
 
         # Create target directories
         set(out_path "${CMAKE_CURRENT_BINARY_DIR}/gxtexconv")

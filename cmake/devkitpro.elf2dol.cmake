@@ -11,6 +11,7 @@ if(NOT ELF2DOL_EXE)
 endif()
 
 if(ELF2DOL_EXE)
+    # TODO: Refactor to modern cmake
     function(add_dol_target file_name source_target_name copy_dol_to_source_dir source_target_path)
         
         set(dol_file ${file_name}.dol)
