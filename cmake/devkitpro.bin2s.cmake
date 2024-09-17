@@ -12,7 +12,6 @@ endif()
 
 if(BIN2S_EXE)
 
-    # TODO: Support binary_files with arbitrary directory structure, generate in binary directory as parallel structure, and include all needed directories
     function(add_bin2s_library target binary_files)
 
         # Create target directories
@@ -57,13 +56,13 @@ if(BIN2S_EXE)
         )
 
         # Log Target Info
-        message(STATUS ${target})
+        message(VERBOSE ${target})
         get_target_property(include_dirs ${target} INTERFACE_INCLUDE_DIRECTORIES)
-        message(STATUS "    Include Dirs: ${include_dirs}")
+        message(VERBOSE "    Include Dirs: ${include_dirs}")
         get_target_property(hfiles ${target} HEADER_SET_bin2s)
-        message(STATUS "    Headers: ${hfiles}")
+        message(VERBOSE "    Headers: ${hfiles}")
         get_target_property(sfiles ${target} SOURCES)
-        message(STATUS "    Sources: ${sfiles}")
+        message(VERBOSE "    Sources: ${sfiles}")
 
     endfunction(add_bin2s_library)
 endif()

@@ -21,8 +21,11 @@ if(NOT DEFINED ENV{PROJECT})
 endif()
 project("$ENV{PROJECT}" LANGUAGES CXX C ASM)
 
+# Enable the next line to log target info
+#set(CMAKE_MESSAGE_LOG_LEVEL VERBOSE)
+
 # Enable the next line to see the actual commands run when building etc.
-set(CMAKE_VERBOSE_MAKEFILE ON)
+#set(CMAKE_VERBOSE_MAKEFILE ON)
 
 # Set the default search path for modules when using include / find_package
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
@@ -52,4 +55,4 @@ target_link_libraries(source_executable PUBLIC assets_bin2s_library)
 
 # elf2dol - .dol executable
 include(devkitpro.elf2dol)
-add_dol_custom("${PROJECT_NAME}.dol" "${PROJECT_NAME}.dol" $<TARGET_FILE:source_executable>)
+add_dol_custom("${PROJECT_NAME}_dol" "${PROJECT_NAME}.dol" $<TARGET_FILE:source_executable>)

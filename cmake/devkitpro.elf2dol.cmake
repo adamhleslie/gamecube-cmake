@@ -25,5 +25,10 @@ if(ELF2DOL_EXE)
                 DEPENDS ${dol_file}
         )
 
+        # Log Target Info
+        message(VERBOSE ${target})
+        message(VERBOSE "    Source File: ${source_file}")
+        message(VERBOSE "    .dol File: ${dol_file}")
+
     endfunction(add_dol_custom)
 endif()

@@ -9,9 +9,9 @@ set(source_libogc_libs
 
 include(devkitpro.gamecube)
 if(${WII})
-    message("Setting up Wii target...")
+    message(STATUS "Setting up Wii target...")
     setup_wii_executable(source_executable "${source_libogc_libs}")
 else()
-    message("Setting up Gamecube target...")
+    message(STATUS "Setting up Gamecube target...")
     setup_gamecube_executable(source_executable "${source_libogc_libs}")
 endif()

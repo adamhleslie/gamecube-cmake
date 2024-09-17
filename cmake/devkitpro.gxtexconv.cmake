@@ -17,10 +17,7 @@ if(GXTEXCONV_EXE)
             BRIEF_DOCS "List of TPL files generated for a gxtexconv target"
     )
 
-    # TODO: Support scf_files with arbitrary directory structure, generate in binary directory as parallel structure, and include all needed directories
-    # TODO: additional_dependencies needs to be paired with their relevant scf_file, otherwise full generation has to occur on any dependency change
-    # TODO: Update gxtexconv to generate DEPFILE based on scf's dependent filepaths instead of relying on provided additional_dependencies
-    function(add_gxtexconv_interface target scf_files additional_dependencies)
+    function(add_gxtexconv_interface target scf_files)
 
         set(target_custom "${target}_custom")
 
@@ -32,10 +29,13 @@ if(GXTEXCONV_EXE)
         foreach(scf_file IN LISTS scf_files)
 
             # Compute output files
+            cmake_path(ABSOLUTE_PATH scf_file)
+            cmake_path(RELATIVE_PATH scf_file BASE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
             cmake_path(GET scf_file FILENAME scf_file_name)
             cmake_path(APPEND out_file_base ${out_path} ${scf_file_name})
             cmake_path(REPLACE_EXTENSION out_file_base ".h" OUTPUT_VARIABLE out_file_h)
             cmake_path(REPLACE_EXTENSION out_file_base ".tpl" OUTPUT_VARIABLE out_file_tpl)
+            cmake_path(REPLACE_EXTENSION out_file_base ".dep" OUTPUT_VARIABLE out_file_dep)
 
             # Append to files list
             list(APPEND out_files_h ${out_file_h})
@@ -51,18 +51,17 @@ if(GXTEXCONV_EXE)
 
             # Create gxtexconv command
             add_custom_command(
-                    OUTPUT ${out_file_h} ${out_file_tpl}
-                    DEPENDS ${scf_file} ${additional_dependencies}
-                    COMMAND ${GXTEXCONV_EXE} ARGS -s ${scf_file_for_command} -o ${out_file_tpl}
-                    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+                    OUTPUT ${out_file_h} ${out_file_tpl} ${out_file_dep}
+                    DEPFILE ${out_file_dep}
+                    COMMAND ${GXTEXCONV_EXE} ARGS -s ${scf_file_for_command} -o ${out_file_tpl} -d ${out_file_dep}
             )
 
         endforeach(scf_file)
 
         # Custom target for file generation
         add_custom_target(${target_custom}
-                SOURCES ${scf_files}
                 DEPENDS ${out_files_h} ${out_files_tpl}
+                SOURCES ${scf_files}
         )
 
         # Interface target for include dependency
@@ -82,13 +81,13 @@ if(GXTEXCONV_EXE)
         add_dependencies(${target} ${target_custom})
 
         # Log Target Info
-        message(STATUS ${target})
+        message(VERBOSE ${target})
         get_target_property(include_dirs ${target} INTERFACE_INCLUDE_DIRECTORIES)
-        message(STATUS "    Include Dirs: ${include_dirs}")
+        message(VERBOSE "    Include Dirs: ${include_dirs}")
         get_target_property(hfiles ${target} HEADER_SET_gxtexconv)
-        message(STATUS "    Headers: ${hfiles}")
+        message(VERBOSE "    Headers: ${hfiles}")
         get_target_property(tplfiles ${target} GXTEXCONV_TPL_FILES)
-        message(STATUS "    TPLs: ${tplfiles}")
+        message(VERBOSE "    TPLs: ${tplfiles}")
 
     endfunction(add_gxtexconv_interface)
 endif()
