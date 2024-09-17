@@ -1,10 +1,9 @@
 # TODO
-- Binary Data w/ bin2o, a la grit
-- Rename bin2o and gxtexconv inputs function inputs and vars away from gen/include dichotomy, and towards more clear and specific naming
+- Continued modernization of cmake code
+- Branches for various template projects
 - Generate linker map file
 - Dolphin gdb stub run command
 - Readme :)
-- reliance on https://github.com/extremscorner/pacman-packages ?
 
 # nds-cmake
 Homebrew Nintendo DS build system
