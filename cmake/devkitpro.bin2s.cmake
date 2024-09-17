@@ -22,17 +22,19 @@ if(BIN2S_EXE)
         # Add a command to process each file with bin2s
         foreach(binary_file IN LISTS binary_files)
 
-            get_filename_component(binary_filename_we ${binary_file} NAME_WE) #TODO: Refactor to cmake_path
-            get_filename_component(binary_extension ${binary_file} EXT) #TODO: Refactor to cmake_path
-
-            string(REPLACE "." "_" object_suffix ${binary_extension})
-            set(out_file_h "${out_path}/${binary_filename_we}${object_suffix}.h")
-            set(out_file_s "${out_path}/${binary_filename_we}${object_suffix}.s")
+            # Compute output files
+            cmake_path(GET binary_file STEM binary_file_stem)
+            cmake_path(GET binary_file EXTENSION binary_file_extension)
+            message("${binary_file} -> ${binary_file_extension}")
+            string(REPLACE "." "_" object_suffix ${binary_file_extension})
+            set(out_file_h "${out_path}/${binary_file_stem}${object_suffix}.h")
+            set(out_file_s "${out_path}/${binary_file_stem}${object_suffix}.s")
 
             # Append to files list
             list(APPEND out_files_h ${out_file_h})
             list(APPEND out_files_s ${out_file_s})
 
+            # Create bin2s command
             add_custom_command(
                     OUTPUT ${out_file_h} ${out_file_s}
                     DEPENDS ${binary_file}

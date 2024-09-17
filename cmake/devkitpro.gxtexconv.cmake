@@ -31,17 +31,16 @@ if(GXTEXCONV_EXE)
         # Add a command to process each file with gxtexconv
         foreach(scf_file IN LISTS scf_files)
 
-            get_filename_component(scf_filename ${scf_file} NAME) #TODO: Refactor to cmake_path
-
             # Compute output files
-            string(REPLACE ".scf" ".h" out_file_h "${out_path}/${scf_filename}")
-            string(REPLACE ".scf" ".tpl" out_file_tpl "${out_path}/${scf_filename}")
+            cmake_path(GET scf_file FILENAME scf_file_name)
+            string(REPLACE ".scf" ".h" out_file_h "${out_path}/${scf_file_name}")
+            string(REPLACE ".scf" ".tpl" out_file_tpl "${out_path}/${scf_file_name}")
 
             # Append to files list
             list(APPEND out_files_h ${out_file_h})
             list(APPEND out_files_tpl ${out_file_tpl})
 
-            # TEMP: Bypass bug in gxtexconv (fixed in extrems's fork)
+            # TEMP: Bypass bug in gxtexconv by making sure there is at least one forward slash (fixed in extrems's gxtexconv fork)
             cmake_path(HAS_PARENT_PATH scf_file scf_file_has_parent_path)
             if(NOT ${scf_file_has_parent_path})
                 cmake_path(SET scf_file_for_command "./${scf_file}")
