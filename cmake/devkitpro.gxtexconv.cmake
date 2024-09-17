@@ -80,7 +80,7 @@ if(GXTEXCONV_EXE)
         )
         add_dependencies(${target} ${target_custom})
 
-        # Log Target Interface
+        # Log Target Info
         message(STATUS ${target})
         get_target_property(include_dirs ${target} INTERFACE_INCLUDE_DIRECTORIES)
         message(STATUS "    Include Dirs: ${include_dirs}")

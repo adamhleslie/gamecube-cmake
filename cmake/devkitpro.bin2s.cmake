@@ -55,7 +55,7 @@ if(BIN2S_EXE)
                 FILES ${out_files_h}
         )
 
-        # Log Target
+        # Log Target Info
         message(STATUS ${target})
         get_target_property(include_dirs ${target} INTERFACE_INCLUDE_DIRECTORIES)
         message(STATUS "    Include Dirs: ${include_dirs}")

@@ -3,7 +3,7 @@
 function(setup_gamecube_executable target libogc_libs)
 
     target_link_libogc(${target} "${libogc_libs}" "cube")
-    setup_gamecube_flags(${target})
+    setup_gamecube_target_options(${target})
 
 endfunction(setup_gamecube_executable)
 
@@ -12,29 +12,33 @@ endfunction(setup_gamecube_executable)
 function(setup_wii_executable target libogc_libs)
 
     target_link_libogc(${target} "${libogc_libs}" "wii")
-    setup_wii_flags(${target})
+    setup_wii_target_options(${target})
 
 endfunction(setup_wii_executable)
 
-function(setup_gamecube_flags target)
+function(setup_gamecube_target_options target)
 
-    set(arch_flags "-DGEKKO -mogc -mcpu=750 -meabi -mhard-float")
-    set_target_properties(${target} PROPERTIES # TODO: Replace with modern cmake's target_link_options / target_compile_options (PRIVATE)
-            LINK_FLAGS "${arch_flags}"
-            COMPILE_FLAGS "${arch_flags}"
+    set(arch_flags "-DGEKKO" "-mogc" "-mcpu=750" "-meabi" "-mhard-float")
+    target_link_options(${target}
+            PRIVATE "${arch_flags}"
+    )
+    target_compile_options(${target}
+            PRIVATE "${arch_flags}"
     )
 
-endfunction(setup_gamecube_flags)
+endfunction(setup_gamecube_target_options)
 
-function(setup_wii_flags target)
+function(setup_wii_target_options target)
 
-    set(arch_flags "-DGEKKO -mrvl -mcpu=750 -meabi -mhard-float")
-    set_target_properties(${target} PROPERTIES # TODO: Replace with modern cmake's target_link_options / target_compile_options (PRIVATE)
-            LINK_FLAGS "${arch_flags}"
-            COMPILE_FLAGS "${arch_flags}"
+    set(arch_flags "-DGEKKO" "-mrvl" "-mcpu=750" "-meabi" "-mhard-float")
+    target_link_options(${target}
+            PRIVATE "${arch_flags}"
+    )
+    target_compile_options(${target}
+            PRIVATE "${arch_flags}"
     )
 
-endfunction(setup_wii_flags)
+endfunction(setup_wii_target_options)
 
 # TODO: Remove linking here, and just do lookup/setup instead here or in toolchain?
 # Used to link to imported libogc libraries
