@@ -35,7 +35,7 @@ if(GXTEXCONV_EXE)
             cmake_path(APPEND out_file_base ${out_path} ${scf_file_name})
             cmake_path(REPLACE_EXTENSION out_file_base ".h" OUTPUT_VARIABLE out_file_h)
             cmake_path(REPLACE_EXTENSION out_file_base ".tpl" OUTPUT_VARIABLE out_file_tpl)
-            cmake_path(REPLACE_EXTENSION out_file_base ".dep" OUTPUT_VARIABLE out_file_dep)
+            cmake_path(REPLACE_EXTENSION out_file_base ".d" OUTPUT_VARIABLE out_file_dep)
 
             # Append to files list
             list(APPEND out_files_h ${out_file_h})
@@ -52,6 +52,7 @@ if(GXTEXCONV_EXE)
             # Create gxtexconv command
             add_custom_command(
                     OUTPUT ${out_file_h} ${out_file_tpl} ${out_file_dep}
+                    DEPENDS ${out_file_tpl} # Self-dependency to cause re-checking of DEPFILE for command
                     DEPFILE ${out_file_dep}
                     COMMAND ${GXTEXCONV_EXE} ARGS -s ${scf_file_for_command} -o ${out_file_tpl} -d ${out_file_dep}
             )
@@ -60,7 +61,7 @@ if(GXTEXCONV_EXE)
 
         # Custom target for file generation
         add_custom_target(${target_custom}
-                DEPENDS ${out_files_h} ${out_files_tpl}
+                DEPENDS ${out_files_h} ${out_files_tpl} ${out_file_dep}
                 SOURCES ${scf_files}
         )
 
