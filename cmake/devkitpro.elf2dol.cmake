@@ -17,7 +17,7 @@ if(ELF2DOL_EXE)
         set(dol_file ${file_name}.dol)
         set(dol ${CMAKE_CURRENT_BINARY_DIR}/${dol_file})
         set(dol_copy ${CMAKE_SOURCE_DIR}/${dol_file})
-        set(source ${CMAKE_CURRENT_BINARY_DIR}/${source_target_path})
+        set(source ${CMAKE_CURRENT_BINARY_DIR}/${source_target_path}.elf)
 
         if(copy_dol_to_source_dir)
             add_custom_command(OUTPUT ${dol} ${dol_copy}
