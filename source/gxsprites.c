@@ -13,10 +13,9 @@
 
 #include <ogc/tpl.h>
 
-
 #include "textures_tpl.h"
 #include "textures.h"
- 
+
 #define DEFAULT_FIFO_SIZE	(256*1024)
 
 static void *frameBuffer[2] = { NULL, NULL};

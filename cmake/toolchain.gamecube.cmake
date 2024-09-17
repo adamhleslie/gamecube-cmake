@@ -23,9 +23,6 @@ set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE NEVER)
 
-# Add libogc includes
-include_directories(${DEVKITPRO}/libogc/include)
-
 # Find core compilation programs
 set(prefix powerpc-eabi-)
 find_program(CMAKE_ASM_COMPILER   ${prefix}gcc        REQUIRED)

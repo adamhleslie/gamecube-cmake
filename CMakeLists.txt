@@ -1,7 +1,14 @@
-cmake_minimum_required(VERSION 3.18)
+cmake_minimum_required(VERSION 3.20.0)
 
 # Enable new optimized variable evaluation
-cmake_policy(SET CMP0053 NEW)
+if(POLICY CMP0053)
+    cmake_policy(SET CMP0053 NEW)
+endif()
+
+# Enable global GENERATED property
+if(POLICY CMP0118)
+    cmake_policy(SET CMP0118 NEW)
+endif()
 
 # Enable the next line to see the actual commands run when building etc.
 set(CMAKE_VERBOSE_MAKEFILE ON)
@@ -18,7 +25,7 @@ message(STATUS "Using C++ compiler: " ${CMAKE_CXX_COMPILER})
 if(NOT DEFINED ENV{PROJECT})
     message(FATAL_ERROR "Please set PROJECT in your environment")
 endif()
-project("$ENV{PROJECT}")
+project("$ENV{PROJECT}" LANGUAGES CXX C ASM)
 
 # Compiler Flags
 set(warning_flags "-Winline -Wall -Wextra")
@@ -30,28 +37,13 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} ${warning_flags} ${cpp_flags} ${de
 set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS} ${warning_flags} ${release_flags}")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} ${warning_flags} ${cpp_flags} ${release_flags}")
 
-# PROJECT - ASSETS #
-#set(ASSETS_PATH "${CMAKE_SOURCE_DIR}/assets")
-#set(ASSETS_GEN "${CMAKE_BINARY_DIR}/assets")
-#set(ASSETS_INCLUDE "${ASSETS_GEN}/include")
-#include_directories(${ASSETS_INCLUDE})
+# Defines bin2s_library
+add_subdirectory(assets)
 
-# gxtexconv - Textures
-#include(gamecube.gxtexconv)
-#set(GXTEXCONV_TARGET_NAME "assets_textures_gxtexconv")
-#add_gxtexconv_target(${GXTEXCONV_TARGET_NAME} "${ASSETS_PATH}/textures" ${ASSETS_GEN} ${ASSETS_INCLUDE})
-
-# bin2s - Binary Files
-#include(gamecube.bin2s)
-#set(BIN2O_TARGET_NAME "assets_textures_bin2o")
-#add_bin2o_target(${BIN2O_TARGET_NAME} ${${GXTEXCONV_TARGET_NAME}_TPL} ${ASSETS_GEN} ${ASSETS_INCLUDE})
-
-## PROJECT - CODE #
-set(SOURCE_TARGET_NAME "source")
-
-include(gamecube.macro)
+# Defines gamecube_executable
 add_subdirectory(source)
+target_link_libraries(gamecube_executable PUBLIC bin2s_library)
 
 # elf2dol - .dol executable
-include(gamecube.elf2dol)
-add_dol_target(${PROJECT_NAME} ${SOURCE_TARGET_NAME} "FALSE" "source/${SOURCE_TARGET_NAME}")
+include(devkitpro.elf2dol)
+add_dol_target(${PROJECT_NAME} gamecube_executable "FALSE" "source/gamecube_executable")

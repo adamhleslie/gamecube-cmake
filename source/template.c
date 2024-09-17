@@ -10,30 +10,30 @@ static GXRModeObj *rmode = NULL;
 
 void *Initialise();
 
-int main(int argc, char **argv) {
-
-	xfb = Initialise();
-
-	printf("\nHello World!\n");
-
-	while(1) {
-
-		VIDEO_WaitVSync();
-		PAD_ScanPads();
-
-		int buttonsDown = PAD_ButtonsDown(0);
-		
-		if( buttonsDown & PAD_BUTTON_A ) {
-			printf("Button A pressed.\n");
-		}
-
-		if (buttonsDown & PAD_BUTTON_START) {
-			exit(0);
-		}
-	}
-
-	return 0;
-}
+// int main(int argc, char **argv) {
+//
+// 	xfb = Initialise();
+//
+// 	printf("\nHello World!\n");
+//
+// 	while(1) {
+//
+// 		VIDEO_WaitVSync();
+// 		PAD_ScanPads();
+//
+// 		int buttonsDown = PAD_ButtonsDown(0);
+//
+// 		if( buttonsDown & PAD_BUTTON_A ) {
+// 			printf("Button A pressed.\n");
+// 		}
+//
+// 		if (buttonsDown & PAD_BUTTON_START) {
+// 			exit(0);
+// 		}
+// 	}
+//
+// 	return 0;
+// }
 
 void * Initialise() {
 

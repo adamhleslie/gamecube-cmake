@@ -1,11 +1,11 @@
-if(NOT SOURCE_TARGET_NAME)
-    message(FATAL_ERROR "Please set SOURCE_TARGET_NAME")
-endif()
-
-add_executable(${SOURCE_TARGET_NAME}
-        template.c)
+add_executable(gamecube_executable
+        template.c
+        gxsprites.c
+)
 
 set(source_libogc_libs
-        ogc)
+        ogc
+)
 
-setup_gamecube_target("${SOURCE_TARGET_NAME}" "${source_libogc_libs}")
+include(devkitpro.gamecube)
+setup_gamecube_executable(gamecube_executable "${source_libogc_libs}")

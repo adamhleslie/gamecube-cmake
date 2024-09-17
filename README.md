@@ -4,6 +4,7 @@
 - Generate linker map file
 - Dolphin gdb stub run command
 - Readme :)
+- reliance on https://github.com/extremscorner/pacman-packages ?
 
 # nds-cmake
 Homebrew Nintendo DS build system
