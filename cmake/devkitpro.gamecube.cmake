@@ -1,3 +1,5 @@
+include_guard(GLOBAL)
+
 # Set up a GameCube executable target
 # Add the definition for the libogc headers
 function(setup_gamecube_executable target libogc_libs)
@@ -55,7 +57,7 @@ endfunction(setup_wii_target_options)
 function(target_link_libogc target libogc_libs path_suffix)
 
     # Uncomment the following line for debugging find_library
-    #set(CMAKE_FIND_DEBUG_MODE 1)
+    #set(CMAKE_FIND_DEBUG_MODE ON)
 
     # Link all libogc libraries
     set(CMAKE_FIND_LIBRARY_PREFIXES "lib")
@@ -64,8 +66,8 @@ function(target_link_libogc target libogc_libs path_suffix)
         if(NOT DEFINED "LIBOGC_${libogc_lib}")
             message(STATUS "Looking for libogc's ${libogc_lib}")
             find_library("LIBOGC_${libogc_lib}_IMPORT" ${libogc_lib}
-                    NO_PACKAGE_ROOT_PATH
-                    PATHS "${DEVKITPRO}/libogc"
+                    NO_DEFAULT_PATH
+                    PATHS "${DEVKITPRO}/libogc/lib"
                     PATH_SUFFIXES ${path_suffix}
             )
             if(LIBOGC_${libogc_lib}_IMPORT)

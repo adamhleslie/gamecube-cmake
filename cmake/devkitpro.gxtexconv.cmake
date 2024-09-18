@@ -1,8 +1,12 @@
+include_guard(GLOBAL)
 # OUT: Defines add_gxtexconv_custom_target function for handling texture files accompanied by script files (.scf)
 
 if(NOT GXTEXCONV_EXE)
     message(STATUS "Looking for gxtexconv")
-    find_program(GXTEXCONV_EXE gxtexconv)
+    if(NOT DEVKITPRO)
+        message(FATAL_ERROR "    DEVKITPRO must be defined")
+    endif()
+    find_program(GXTEXCONV_EXE "gxtexconv" PATHS "${DEVKITPRO}/tools/bin" NO_DEFAULT_PATH)
     if(GXTEXCONV_EXE)
         message(STATUS "    Found -- ${GXTEXCONV_EXE}")
     else()

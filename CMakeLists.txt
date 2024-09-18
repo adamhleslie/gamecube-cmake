@@ -30,8 +30,8 @@ project("$ENV{PROJECT}" LANGUAGES CXX C ASM)
 # Set the default search path for modules when using include / find_package
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
-# Set to 1 when target system is Wii
-set(WII 0)
+# Set to ON when target system is Wii
+set(WII OFF)
 
 # Compiler Flags
 set(warning_flags "-Winline -Wall -Wextra")

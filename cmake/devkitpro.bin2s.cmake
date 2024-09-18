@@ -1,8 +1,12 @@
+include_guard(GLOBAL)
 # OUT: Defines add_bin2s_library function for converting binary files to object files
 
 if(NOT BIN2S_EXE)
     message(STATUS "Looking for bin2s")
-    find_program(BIN2S_EXE bin2s)
+    if(NOT DEVKITPRO)
+        message(FATAL_ERROR "    DEVKITPRO must be defined")
+    endif()
+    find_program(BIN2S_EXE "bin2s" PATHS "${DEVKITPRO}/tools/bin" NO_DEFAULT_PATH)
     if(BIN2S_EXE)
         message(STATUS "    Found -- ${BIN2S_EXE}")
     else()
@@ -11,7 +15,6 @@ if(NOT BIN2S_EXE)
 endif()
 
 if(BIN2S_EXE)
-
     function(add_bin2s_library target binary_files)
 
         # Create target directories

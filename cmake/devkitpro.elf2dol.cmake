@@ -1,8 +1,12 @@
+include_guard(GLOBAL)
 # OUT: Defines add_dol_custom function for creating an executable
 
 if(NOT ELF2DOL_EXE)
     message(STATUS "Looking for elf2dol")
-    find_program(ELF2DOL_EXE elf2dol)
+    if(NOT DEVKITPRO)
+        message(FATAL_ERROR "    DEVKITPRO must be defined")
+    endif()
+    find_program(ELF2DOL_EXE "elf2dol" PATHS "${DEVKITPRO}/tools/bin" NO_DEFAULT_PATH)
     if(ELF2DOL_EXE)
         message(STATUS "    Found -- ${ELF2DOL_EXE}")
     else()
