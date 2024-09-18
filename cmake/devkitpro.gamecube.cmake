@@ -1,56 +1,36 @@
 include_guard(GLOBAL)
+# OUT: gamecube_interface / wii_interface libraries providing compile and link options via interface
+# OUT: target_link_libogc function for linking to imported libogc libraries
 
-# Set up a GameCube executable target
-# Add the definition for the libogc headers
-function(setup_gamecube_executable target libogc_libs)
-
-    target_link_libogc(${target} "${libogc_libs}" "cube")
-    setup_gamecube_target_options(${target})
-
-endfunction(setup_gamecube_executable)
-
-# Set up a Wii executable target
-# Add the definition for the libogc headers
-function(setup_wii_executable target libogc_libs)
-
-    target_link_libogc(${target} "${libogc_libs}" "wii")
-    setup_wii_target_options(${target})
-
-endfunction(setup_wii_executable)
-
-function(setup_gamecube_target_options target)
-
+block(SCOPE_FOR VARIABLES)
+    add_library(gamecube_interface INTERFACE)
     set(arch_flags "-mogc" "-mcpu=750" "-meabi" "-mhard-float")
-    target_link_options(${target}
-            PRIVATE "${arch_flags}"
-    )
-    target_compile_options(${target}
-            PRIVATE "${arch_flags}"
-    )
-
     set(definitions "GEKKO")
-    target_compile_definitions(${target}
-            PRIVATE "${definitions}"
+    target_compile_options(gamecube_interface
+            INTERFACE ${arch_flags}
     )
+    target_link_options(gamecube_interface
+            INTERFACE ${arch_flags}
+    )
+    target_compile_definitions(gamecube_interface
+            INTERFACE ${definitions}
+    )
+endblock()
 
-endfunction(setup_gamecube_target_options)
-
-function(setup_wii_target_options target)
-
+block(SCOPE_FOR VARIABLES)
+    add_library(wii_interface INTERFACE)
     set(arch_flags "-mrvl" "-mcpu=750" "-meabi" "-mhard-float")
-    target_link_options(${target}
-            PRIVATE "${arch_flags}"
-    )
-    target_compile_options(${target}
-            PRIVATE "${arch_flags}"
-    )
-
     set(definitions "GEKKO")
-    target_compile_definitions(${target}
-            PRIVATE "${definitions}"
+    target_compile_options(wii_interface
+            INTERFACE ${arch_flags}
     )
-
-endfunction(setup_wii_target_options)
+    target_link_options(wii_interface
+            INTERFACE ${arch_flags}
+    )
+    target_compile_definitions(wii_interface
+            INTERFACE ${definitions}
+    )
+endblock()
 
 # TODO: Remove linking here, and just do lookup/setup instead here or in toolchain?
 # Used to link to imported libogc libraries

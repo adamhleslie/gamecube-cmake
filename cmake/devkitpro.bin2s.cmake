@@ -1,5 +1,5 @@
 include_guard(GLOBAL)
-# OUT: Defines add_bin2s_library function for converting binary files to object files
+# OUT: add_bin2s_library function for converting binary files to object files
 
 if(NOT BIN2S_EXE)
     message(STATUS "Looking for bin2s")

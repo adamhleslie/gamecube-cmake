@@ -1,5 +1,5 @@
 include_guard(GLOBAL)
-# OUT: Defines add_gxtexconv_custom_target function for handling texture files accompanied by script files (.scf)
+# OUT: add_gxtexconv_custom_target function for handling texture files accompanied by script files (.scf)
 
 if(NOT GXTEXCONV_EXE)
     message(STATUS "Looking for gxtexconv")
