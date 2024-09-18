@@ -37,17 +37,13 @@ set(WII OFF)
 set(warning_flags "-Winline" "-Wall" "-Wextra")
 set(cpp_flags "-fno-rtti" "-fno-exceptions")
 set(debug_flags "-O0" "-g" "-DDEBUG")
-set(release_flags "-O3" "-fomit-frame-pointer" "-ffastmath")
-add_compile_options(${warning_flags})
-foreach(flag ${cpp_flags})
-    add_compile_options($<$<COMPILE_LANGUAGE:CXX>:${flag}>)
-endforeach()
-foreach(flag ${debug_flags})
-    add_compile_options($<$<CONFIG:Debug>:${flag}>)
-endforeach()
-foreach(flag ${release_flags})
-    add_compile_options($<$<CONFIG:Release>:${flag}>)
-endforeach()
+set(release_flags "-O3" "-fomit-frame-pointer" "-ffast-math")
+add_compile_options(
+        ${warning_flags}
+        "$<$<COMPILE_LANGUAGE:CXX>:${cpp_flags}>"
+        "$<$<CONFIG:Debug>:${debug_flags}>"
+        "$<$<CONFIG:Release>:${release_flags}>"
+)
 
 # Defines assets_bin2s_library
 add_subdirectory(assets)
