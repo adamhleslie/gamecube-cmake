@@ -59,5 +59,5 @@ add_subdirectory(source)
 target_link_libraries(source_executable PUBLIC assets_bin2s_library)
 
 # elf2dol - .dol executable
-include(devkitpro.elf2dol)
+include(devkitpro-elf2dol)
 add_dol_custom("${PROJECT_NAME}_dol" "${PROJECT_NAME}.dol" $<TARGET_FILE:source_executable>)

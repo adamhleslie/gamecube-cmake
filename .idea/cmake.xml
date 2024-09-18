@@ -2,7 +2,7 @@
 <project version="4">
   <component name="CMakeSharedSettings">
     <configurations>
-      <configuration PROFILE_NAME="Debug" ENABLED="true" GENERATION_DIR="out/debug" CONFIG_NAME="Debug" GENERATION_OPTIONS="-DCMAKE_TOOLCHAIN_FILE=cmake/toolchain.gamecube.cmake -DCMAKE_BUILD_TYPE=Debug">
+      <configuration PROFILE_NAME="Debug" ENABLED="true" GENERATION_DIR="out/debug" CONFIG_NAME="Debug" GENERATION_OPTIONS="-DCMAKE_TOOLCHAIN_FILE=cmake/devkitppc-toolchain.cmake -DCMAKE_BUILD_TYPE=Debug">
         <ADDITIONAL_GENERATION_ENVIRONMENT>
           <envs>
             <env name="DEVKITPRO" value="/opt/devkitpro" />
@@ -10,7 +10,7 @@
           </envs>
         </ADDITIONAL_GENERATION_ENVIRONMENT>
       </configuration>
-      <configuration PROFILE_NAME="Release" ENABLED="true" GENERATION_DIR="out/release" CONFIG_NAME="Release" GENERATION_OPTIONS="-DCMAKE_TOOLCHAIN_FILE=cmake/toolchain.gamecube.cmake -DCMAKE_BUILD_TYPE=Release">
+      <configuration PROFILE_NAME="Release" ENABLED="true" GENERATION_DIR="out/release" CONFIG_NAME="Release" GENERATION_OPTIONS="-DCMAKE_TOOLCHAIN_FILE=cmake/devkitppc-toolchain.cmake -DCMAKE_BUILD_TYPE=Release">
         <ADDITIONAL_GENERATION_ENVIRONMENT>
           <envs>
             <env name="DEVKITPRO" value="/opt/devkitpro" />
