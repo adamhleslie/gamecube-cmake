@@ -18,24 +18,34 @@ endfunction(setup_wii_executable)
 
 function(setup_gamecube_target_options target)
 
-    set(arch_flags "-DGEKKO" "-mogc" "-mcpu=750" "-meabi" "-mhard-float")
+    set(arch_flags "-mogc" "-mcpu=750" "-meabi" "-mhard-float")
     target_link_options(${target}
             PRIVATE "${arch_flags}"
     )
     target_compile_options(${target}
             PRIVATE "${arch_flags}"
+    )
+
+    set(definitions "GEKKO")
+    target_compile_definitions(${target}
+            PRIVATE "${definitions}"
     )
 
 endfunction(setup_gamecube_target_options)
 
 function(setup_wii_target_options target)
 
-    set(arch_flags "-DGEKKO" "-mrvl" "-mcpu=750" "-meabi" "-mhard-float")
+    set(arch_flags "-mrvl" "-mcpu=750" "-meabi" "-mhard-float")
     target_link_options(${target}
             PRIVATE "${arch_flags}"
     )
     target_compile_options(${target}
             PRIVATE "${arch_flags}"
+    )
+
+    set(definitions "GEKKO")
+    target_compile_definitions(${target}
+            PRIVATE "${definitions}"
     )
 
 endfunction(setup_wii_target_options)
