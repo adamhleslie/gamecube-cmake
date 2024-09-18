@@ -13,7 +13,6 @@ set(DEVKITPRO $ENV{DEVKITPRO})
 
 # Find core compilation programs
 set(paths "${DEVKITPRO}/devkitPPC/bin")
-message(STATUS "paths: ${paths}")
 set(prefix "powerpc-eabi-")
 find_program(CMAKE_ASM_COMPILER "${prefix}gcc"      PATHS ${paths} NO_DEFAULT_PATH REQUIRED)
 find_program(CMAKE_C_COMPILER   "${prefix}gcc"      PATHS ${paths} NO_DEFAULT_PATH REQUIRED)
