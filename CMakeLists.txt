@@ -44,6 +44,12 @@ add_compile_options(
         "$<$<CONFIG:Debug>:${debug_flags}>"
         "$<$<CONFIG:Release>:${release_flags}>"
 )
+add_link_options(
+        ${warning_flags}
+        "$<$<COMPILE_LANGUAGE:CXX>:${cpp_flags}>"
+        "$<$<CONFIG:Debug>:${debug_flags}>"
+        "$<$<CONFIG:Release>:${release_flags}>"
+)
 
 # Defines assets_bin2s_library
 add_subdirectory(assets)
