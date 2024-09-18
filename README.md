@@ -5,6 +5,7 @@
 - Generate linker map file
 - Dolphin gdb stub run command
 - Readme :)
+- Consider adding CMakePresets.json
 
 # nds-cmake
 Homebrew Nintendo DS build system
