@@ -36,9 +36,6 @@ endblock()
 # Used to link to imported libogc libraries
 function(target_link_libogc target libogc_libs path_suffix)
 
-    # Uncomment the following line for debugging find_library
-    #set(CMAKE_FIND_DEBUG_MODE ON)
-
     # Link all libogc libraries
     set(CMAKE_FIND_LIBRARY_PREFIXES "lib")
     set(CMAKE_FIND_LIBRARY_SUFFIXES ".a")

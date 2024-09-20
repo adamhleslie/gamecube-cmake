@@ -7,7 +7,6 @@ set(source_libogc_libs
         ogc
 )
 
-include(devkitpro-gamecube)
 if(${WII})
     message(STATUS "Setting up Wii target...")
     target_link_libogc(source_executable "${source_libogc_libs}" "wii")

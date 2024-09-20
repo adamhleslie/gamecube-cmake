@@ -27,11 +27,18 @@ project("$ENV{PROJECT}" LANGUAGES CXX C ASM)
 # Enable the next line to see the actual commands run when building etc.
 #set(CMAKE_VERBOSE_MAKEFILE ON)
 
+# Enable the next line for debugging find commands
+#set(CMAKE_FIND_DEBUG_MODE ON)
+
 # Set the default search path for modules when using include / find_package
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
 # Set to ON when target system is Wii
 set(WII OFF)
+
+# TEMP HACK: Local project contains devkitpro package instead of it being found in DEVKITPRO install location
+set(devkitpro_ROOT "${CMAKE_SOURCE_DIR}/cmake/devkitpro")
+find_package(devkitpro REQUIRED)
 
 # Compiler Flags
 set(warning_flags "-Winline" "-Wall" "-Wextra")
@@ -59,5 +66,4 @@ add_subdirectory(source)
 target_link_libraries(source_executable PUBLIC assets_bin2s_library)
 
 # elf2dol - .dol executable
-include(devkitpro-elf2dol)
 add_dol_custom("${PROJECT_NAME}_dol" "${PROJECT_NAME}.dol" $<TARGET_FILE:source_executable>)
