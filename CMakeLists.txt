@@ -38,7 +38,7 @@ set(WII OFF)
 
 # TEMP HACK: Local project contains devkitpro package instead of it being found in DEVKITPRO install location
 set(devkitpro_ROOT "${CMAKE_SOURCE_DIR}/cmake/devkitpro")
-find_package(devkitpro REQUIRED)
+find_package(devkitpro CONFIG REQUIRED)
 
 # Compiler Flags
 set(warning_flags "-Winline" "-Wall" "-Wextra")
@@ -66,4 +66,4 @@ add_subdirectory(source)
 target_link_libraries(source_executable PUBLIC assets_bin2s_library)
 
 # elf2dol - .dol executable
-add_dol_custom("${PROJECT_NAME}_dol" "${PROJECT_NAME}.dol" $<TARGET_FILE:source_executable>)
+devkitpro_add_elf2dol("${PROJECT_NAME}_dol" "${PROJECT_NAME}.dol" $<TARGET_FILE:source_executable> TRUE)

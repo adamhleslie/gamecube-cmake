@@ -1,20 +1,9 @@
 include_guard(GLOBAL)
 # OUT: add_bin2s_library function for converting binary files to object files
 
-if(NOT BIN2S_EXE)
-    message(STATUS "Looking for bin2s")
-    if(NOT DEVKITPRO)
-        message(FATAL_ERROR "    DEVKITPRO must be defined")
-    endif()
-    find_program(BIN2S_EXE "bin2s" PATHS "${DEVKITPRO}/tools/bin" NO_DEFAULT_PATH)
-    if(BIN2S_EXE)
-        message(STATUS "    Found -- ${BIN2S_EXE}")
-    else()
-        message(FATAL_ERROR "    Could not find bin2s")
-    endif()
-endif()
+devkitpro_find_file(DEVKITPRO_BIN2S "tools/bin/bin2s")
 
-if(BIN2S_EXE)
+if(DEVKITPRO_BIN2S)
     function(add_bin2s_library target binary_files)
 
         # Create target directories
@@ -41,7 +30,7 @@ if(BIN2S_EXE)
             add_custom_command(
                     OUTPUT ${out_file_h} ${out_file_s}
                     DEPENDS ${binary_file}
-                    COMMAND ${BIN2S_EXE} ARGS -a 32 -H ${out_file_h} ${binary_file} > ${out_file_s}
+                    COMMAND ${DEVKITPRO_BIN2S} ARGS -a 32 -H ${out_file_h} ${binary_file} > ${out_file_s}
             )
 
         endforeach(binary_file)
@@ -59,13 +48,13 @@ if(BIN2S_EXE)
         )
 
         # Log Target Info
-        message(VERBOSE ${target})
+        devkitpro_message(VERBOSE ${target})
         get_target_property(include_dirs ${target} INTERFACE_INCLUDE_DIRECTORIES)
-        message(VERBOSE "    Include Dirs: ${include_dirs}")
+        devkitpro_message(VERBOSE "    Include Dirs: ${include_dirs}")
         get_target_property(hfiles ${target} HEADER_SET_bin2s)
-        message(VERBOSE "    Headers: ${hfiles}")
+        devkitpro_message(VERBOSE "    Headers: ${hfiles}")
         get_target_property(sfiles ${target} SOURCES)
-        message(VERBOSE "    Sources: ${sfiles}")
+        devkitpro_message(VERBOSE "    Sources: ${sfiles}")
 
     endfunction(add_bin2s_library)
 endif()

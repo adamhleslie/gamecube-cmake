@@ -1,20 +1,9 @@
 include_guard(GLOBAL)
 # OUT: add_gxtexconv_custom_target function for handling texture files accompanied by script files (.scf)
 
-if(NOT GXTEXCONV_EXE)
-    message(STATUS "Looking for gxtexconv")
-    if(NOT DEVKITPRO)
-        message(FATAL_ERROR "    DEVKITPRO must be defined")
-    endif()
-    find_program(GXTEXCONV_EXE "gxtexconv" PATHS "${DEVKITPRO}/tools/bin" NO_DEFAULT_PATH)
-    if(GXTEXCONV_EXE)
-        message(STATUS "    Found -- ${GXTEXCONV_EXE}")
-    else()
-        message(FATAL_ERROR "    Could not find gxtexconv")
-    endif()
-endif()
+devkitpro_find_file(DEVKITPRO_GXTEXCONV "tools/bin/gxtexconv")
 
-if(GXTEXCONV_EXE)
+if(DEVKITPRO_GXTEXCONV)
     define_property(
             TARGET
             PROPERTY GXTEXCONV_TPL_FILES
@@ -58,7 +47,7 @@ if(GXTEXCONV_EXE)
                     OUTPUT ${out_file_h} ${out_file_tpl} ${out_file_dep}
                     DEPENDS ${out_file_tpl} # Self-dependency to cause re-checking of DEPFILE for command
                     DEPFILE ${out_file_dep}
-                    COMMAND ${GXTEXCONV_EXE} ARGS -s ${scf_file_for_command} -o ${out_file_tpl} -d ${out_file_dep}
+                    COMMAND ${DEVKITPRO_GXTEXCONV} ARGS -s ${scf_file_for_command} -o ${out_file_tpl} -d ${out_file_dep}
             )
 
         endforeach(scf_file)
@@ -86,13 +75,13 @@ if(GXTEXCONV_EXE)
         add_dependencies(${target} ${target_custom})
 
         # Log Target Info
-        message(VERBOSE ${target})
+        devkitpro_message(VERBOSE ${target})
         get_target_property(include_dirs ${target} INTERFACE_INCLUDE_DIRECTORIES)
-        message(VERBOSE "    Include Dirs: ${include_dirs}")
+        devkitpro_message(VERBOSE "    Include Dirs: ${include_dirs}")
         get_target_property(hfiles ${target} HEADER_SET_gxtexconv)
-        message(VERBOSE "    Headers: ${hfiles}")
+        devkitpro_message(VERBOSE "    Headers: ${hfiles}")
         get_target_property(tplfiles ${target} GXTEXCONV_TPL_FILES)
-        message(VERBOSE "    TPLs: ${tplfiles}")
+        devkitpro_message(VERBOSE "    TPLs: ${tplfiles}")
 
     endfunction(add_gxtexconv_interface)
 endif()
