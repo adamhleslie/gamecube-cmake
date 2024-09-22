@@ -1,6 +1,5 @@
 # TODO
-- Continued modernization of cmake code
-  - Add config-file and find module implementations for dkp
+- Determine best approach for toolchain file
 - Branches for various template projects
 - Generate linker map file
 - Dolphin gdb stub run command
