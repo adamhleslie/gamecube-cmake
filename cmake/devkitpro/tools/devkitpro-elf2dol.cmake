@@ -1,5 +1,5 @@
 include_guard(GLOBAL)
-# OUT: devkitpro_add_elf2dol function for creating a dol file from an elf executable
+# OUT: devkitpro_add_elf2dol function adds a custom target for converting an executable elf file to a dol file
 
 devkitpro_find_file(DEVKITPRO_ELF2DOL "tools/bin/elf2dol")
 

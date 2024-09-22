@@ -1,5 +1,5 @@
 include_guard(GLOBAL)
-# OUT: devkitpro_add_bin2s function adds an object library converting binary files to object files
+# OUT: devkitpro_add_bin2s function adds an object library for converting binary files to object files
 
 devkitpro_find_file(DEVKITPRO_BIN2S "tools/bin/bin2s")
 
