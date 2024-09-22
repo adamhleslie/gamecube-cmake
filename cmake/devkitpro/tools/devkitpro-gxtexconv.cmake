@@ -1,16 +1,16 @@
 include_guard(GLOBAL)
-# OUT: add_gxtexconv_custom_target function for handling texture files accompanied by script files (.scf)
+# OUT: devkitpro_add_gxtexconv function for handling texture files accompanied by script files (.scf)
 
 devkitpro_find_file(DEVKITPRO_GXTEXCONV "tools/bin/gxtexconv")
 
 if(DEVKITPRO_GXTEXCONV)
     define_property(
             TARGET
-            PROPERTY GXTEXCONV_TPL_FILES
+            PROPERTY DEVKITPRO_GXTEXCONV_TPL_FILES
             BRIEF_DOCS "List of TPL files generated for a gxtexconv target"
     )
 
-    function(add_gxtexconv_interface target scf_files)
+    function(devkitpro_add_gxtexconv target scf_files)
 
         set(target_custom "${target}_custom")
 
@@ -70,7 +70,7 @@ if(DEVKITPRO_GXTEXCONV)
                 FILES ${out_files_h}
         )
         set_target_properties(${target} PROPERTIES
-                GXTEXCONV_TPL_FILES "${out_files_tpl}"
+                DEVKITPRO_GXTEXCONV_TPL_FILES "${out_files_tpl}"
         )
         add_dependencies(${target} ${target_custom})
 
@@ -80,8 +80,8 @@ if(DEVKITPRO_GXTEXCONV)
         devkitpro_message(VERBOSE "    Include Dirs: ${include_dirs}")
         get_target_property(hfiles ${target} HEADER_SET_gxtexconv)
         devkitpro_message(VERBOSE "    Headers: ${hfiles}")
-        get_target_property(tplfiles ${target} GXTEXCONV_TPL_FILES)
+        get_target_property(tplfiles ${target} DEVKITPRO_GXTEXCONV_TPL_FILES)
         devkitpro_message(VERBOSE "    TPLs: ${tplfiles}")
 
-    endfunction(add_gxtexconv_interface)
+    endfunction(devkitpro_add_gxtexconv)
 endif()

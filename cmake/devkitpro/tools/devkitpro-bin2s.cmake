@@ -1,10 +1,10 @@
 include_guard(GLOBAL)
-# OUT: add_bin2s_library function for converting binary files to object files
+# OUT: devkitpro_add_bin2s function for converting binary files to object files
 
 devkitpro_find_file(DEVKITPRO_BIN2S "tools/bin/bin2s")
 
 if(DEVKITPRO_BIN2S)
-    function(add_bin2s_library target binary_files)
+    function(devkitpro_add_bin2s target binary_files)
 
         # Create target directories
         cmake_path(APPEND out_path ${CMAKE_CURRENT_BINARY_DIR} "bin2s")
@@ -56,5 +56,5 @@ if(DEVKITPRO_BIN2S)
         get_target_property(sfiles ${target} SOURCES)
         devkitpro_message(VERBOSE "    Sources: ${sfiles}")
 
-    endfunction(add_bin2s_library)
+    endfunction(devkitpro_add_bin2s)
 endif()
