@@ -1,5 +1,6 @@
 # TODO
 - Determine best approach for toolchain file
+- Return to single cmakelists for simplicity
 - Branches for various template projects
 - Generate linker map file
 - Dolphin gdb stub run command
