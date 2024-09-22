@@ -36,11 +36,11 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 # Set to ON when target system is Wii
 set(WII OFF)
 
-# TEMP HACK: Local project contains devkitpro package instead of it being found in DEVKITPRO install location
+# TEMP HACK: Local project contains devkitpro config package instead of it being found in DEVKITPRO install location
 set(devkitpro_ROOT "${CMAKE_SOURCE_DIR}/cmake/devkitpro")
 find_package(devkitpro CONFIG REQUIRED)
 
-# Compiler Flags
+# Global Compiler Flags
 set(warning_flags "-Winline" "-Wall" "-Wextra")
 set(cpp_flags "-fno-rtti" "-fno-exceptions")
 set(debug_flags "-O0" "-g" "-DDEBUG")
@@ -58,12 +58,12 @@ add_link_options(
         "$<$<CONFIG:Release>:${release_flags}>"
 )
 
-# Defines assets_bin2s_library
+# Defines assets_bin2s
 add_subdirectory(assets)
 
 # Defines source_executable
 add_subdirectory(source)
-target_link_libraries(source_executable PUBLIC assets_bin2s_library)
+target_link_libraries(source_executable PUBLIC assets_bin2s)
 
 # elf2dol - .dol executable
 devkitpro_add_elf2dol("${PROJECT_NAME}_dol" "${PROJECT_NAME}.dol" $<TARGET_FILE:source_executable> TRUE)

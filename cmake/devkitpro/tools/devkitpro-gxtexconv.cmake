@@ -1,5 +1,6 @@
 include_guard(GLOBAL)
-# OUT: devkitpro_add_gxtexconv function for handling texture files accompanied by script files (.scf)
+# OUT: devkitpro_add_gxtexconv function adds a interface library for converting .scf files and their associated textures into .tpl files
+#   - DEVKITPRO_GXTEXCONV_TPL_FILES property on target set to the list of generated .tpl files
 
 devkitpro_find_file(DEVKITPRO_GXTEXCONV "tools/bin/gxtexconv")
 
@@ -67,6 +68,7 @@ if(DEVKITPRO_GXTEXCONV)
                 INTERFACE
                 FILE_SET gxtexconv
                 TYPE HEADERS
+                BASE_DIRS ${out_path}
                 FILES ${out_files_h}
         )
         set_target_properties(${target} PROPERTIES
