@@ -1,0 +1,3 @@
+[submodule "cmake/devkitpro"]
+	path = cmake/devkitpro
+	url = git@github.com:adamhleslie/devkitpro-cmake-config.git
