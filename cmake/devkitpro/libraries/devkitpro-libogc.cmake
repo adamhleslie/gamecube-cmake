@@ -1,32 +1,67 @@
 include_guard(GLOBAL)
-# OUT: target_link_libogc function for linking to imported libogc libraries
+# OUT: Static libraries for each libogc component of the form devkitpro::libogc::gamecube::X and devkitpro::libogc::wii::X
 
-# TODO: Remove linking here, and just do lookup/setup instead here or in toolchain?
-# Used to link to imported libogc libraries
-function(target_link_libogc target libogc_libs path_suffix)
-
-    # Link all libogc libraries
-    set(CMAKE_FIND_LIBRARY_PREFIXES "lib")
-    set(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
-    foreach(libogc_lib ${libogc_libs})
-        if(NOT DEFINED "LIBOGC_${libogc_lib}")
-            devkitpro_message(STATUS "Looking for libogc's ${libogc_lib}")
-            find_library("LIBOGC_${libogc_lib}_IMPORT" ${libogc_lib}
-                    NO_DEFAULT_PATH
-                    PATHS "${DEVKITPRO}/libogc/lib"
-                    PATH_SUFFIXES ${path_suffix}
+# Helper function used for importing
+function(devkitpro_libogc_import lib_name is_cube_lib is_wii_lib)
+    if(${is_cube_lib})
+        devkitpro_message(CHECK_START "Importing ${lib_name} (Gamecube)")
+        cmake_path(APPEND cube_lib_location "libogc/lib/cube" "lib${lib_name}.a")
+        cmake_path(ABSOLUTE_PATH cube_lib_location BASE_DIRECTORY ${DEVKITPRO})
+        if(EXISTS ${cube_lib_location})
+            add_library(devkitpro::libogc::gamecube::${lib_name} STATIC IMPORTED)
+            set_target_properties(devkitpro::libogc::gamecube::${lib_name} PROPERTIES
+                    IMPORTED_LOCATION ${cube_lib_location}
             )
-            if(LIBOGC_${libogc_lib}_IMPORT)
-                add_library("LIBOGC_${libogc_lib}" INTERFACE)
-                target_link_libraries("LIBOGC_${libogc_lib}" INTERFACE ${LIBOGC_${libogc_lib}_IMPORT})
-                target_include_directories("LIBOGC_${libogc_lib}" INTERFACE "${DEVKITPRO}/libogc/include")
-                devkitpro_message(STATUS "    Found -- ${LIBOGC_${libogc_lib}_IMPORT}")
-            else()
-                devkitpro_message(FATAL_ERROR "    Could not find ${libogc_lib}")
-            endif()
+            target_include_directories(devkitpro::libogc::gamecube::${lib_name} INTERFACE "${DEVKITPRO}/libogc/include")
+            devkitpro_message(CHECK_PASS "Imported")
+        else()
+            devkitpro_message(CHECK_FAIL "Could not find at ${cube_lib_location}")
+            set(libogc_import_failed TRUE PARENT_SCOPE)
         endif()
+    endif()
 
-        target_link_libraries(${target} PUBLIC "LIBOGC_${libogc_lib}")
-    endforeach(libogc_lib)
+    if(${is_wii_lib})
+        devkitpro_message(CHECK_START "Importing ${lib_name} (Wii)")
+        cmake_path(APPEND wii_lib_location "libogc/lib/wii" "lib${lib_name}.a")
+        cmake_path(ABSOLUTE_PATH wii_lib_location BASE_DIRECTORY ${DEVKITPRO})
+        if(EXISTS ${wii_lib_location})
+            add_library(devkitpro::libogc::wii::${lib_name} STATIC IMPORTED)
+            set_target_properties(devkitpro::libogc::wii::${lib_name} PROPERTIES
+                    IMPORTED_LOCATION ${wii_lib_location}
+            )
+            target_include_directories(devkitpro::libogc::wii::${lib_name} INTERFACE "${DEVKITPRO}/libogc/include")
+            devkitpro_message(CHECK_PASS "Imported")
+        else()
+            devkitpro_message(CHECK_FAIL "Could not find at ${wii_lib_location}")
+            set(libogc_import_failed TRUE PARENT_SCOPE)
+        endif()
+    endif()
+endfunction(devkitpro_libogc_import)
 
-endfunction(target_link_libogc)
+set(libogc_import_failed FALSE)
+devkitpro_message(CHECK_START "Importing libogc")
+list(APPEND CMAKE_MESSAGE_INDENT "  ")
+
+devkitpro_libogc_import(aesnd       TRUE  TRUE)
+devkitpro_libogc_import(asnd        TRUE  TRUE)
+devkitpro_libogc_import(bba         TRUE  FALSE)
+devkitpro_libogc_import(bte         FALSE TRUE)
+devkitpro_libogc_import(db          TRUE  TRUE)
+devkitpro_libogc_import(di          FALSE TRUE)
+devkitpro_libogc_import(fat         TRUE  TRUE)
+devkitpro_libogc_import(gxflux      TRUE  TRUE)
+devkitpro_libogc_import(iso9660     TRUE  TRUE)
+devkitpro_libogc_import(mad         TRUE  TRUE)
+devkitpro_libogc_import(modplay     TRUE  TRUE)
+devkitpro_libogc_import(ogc         TRUE  TRUE)
+devkitpro_libogc_import(tinysmb     TRUE  TRUE)
+devkitpro_libogc_import(wiikeyboard FALSE TRUE)
+devkitpro_libogc_import(wiiuse      FALSE TRUE)
+
+list(POP_BACK CMAKE_MESSAGE_INDENT)
+if(${libogc_import_failed})
+    devkitpro_message(CHECK_FAIL "Missing components")
+    message(FATAL_ERROR)
+else()
+    devkitpro_message(CHECK_PASS "Imported all components")
+endif()

@@ -3,16 +3,16 @@ add_executable(source_executable
         gxsprites.c
 )
 
-set(source_libogc_libs
-        ogc
-)
-
 if(${WII})
     message(STATUS "Setting up Wii target...")
-    target_link_libogc(source_executable "${source_libogc_libs}" "wii")
-    target_link_libraries(source_executable PRIVATE devkitpro::wii)
+    target_link_libraries(source_executable
+            PRIVATE devkitpro::wii
+            PRIVATE devkitpro::libogc::wii::ogc
+    )
 else()
     message(STATUS "Setting up Gamecube target...")
-    target_link_libogc(source_executable "${source_libogc_libs}" "cube")
-    target_link_libraries(source_executable PRIVATE devkitpro::gamecube)
+    target_link_libraries(source_executable
+            PRIVATE devkitpro::gamecube
+            PRIVATE devkitpro::libogc::gamecube::ogc
+    )
 endif()
