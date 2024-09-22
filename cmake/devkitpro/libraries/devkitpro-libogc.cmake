@@ -1,5 +1,5 @@
 include_guard(GLOBAL)
-# OUT: Static libraries for each libogc component of the form devkitpro::libogc::gamecube::X and devkitpro::libogc::wii::X
+# OUT: Static libraries for libogc in the form devkitpro::libogc::gamecube::X and devkitpro::libogc::wii::X
 
 # Helper function used for importing
 function(devkitpro_libogc_import lib_name is_cube_lib is_wii_lib)
@@ -15,8 +15,8 @@ function(devkitpro_libogc_import lib_name is_cube_lib is_wii_lib)
             target_include_directories(devkitpro::libogc::gamecube::${lib_name} INTERFACE "${DEVKITPRO}/libogc/include")
             devkitpro_message(CHECK_PASS "Imported")
         else()
-            devkitpro_message(CHECK_FAIL "Could not find at ${cube_lib_location}")
             set(libogc_import_failed TRUE PARENT_SCOPE)
+            devkitpro_message(CHECK_FAIL "Could not find at ${cube_lib_location}")
         endif()
     endif()
 
@@ -32,8 +32,8 @@ function(devkitpro_libogc_import lib_name is_cube_lib is_wii_lib)
             target_include_directories(devkitpro::libogc::wii::${lib_name} INTERFACE "${DEVKITPRO}/libogc/include")
             devkitpro_message(CHECK_PASS "Imported")
         else()
-            devkitpro_message(CHECK_FAIL "Could not find at ${wii_lib_location}")
             set(libogc_import_failed TRUE PARENT_SCOPE)
+            devkitpro_message(CHECK_FAIL "Could not find at ${wii_lib_location}")
         endif()
     endif()
 endfunction(devkitpro_libogc_import)
