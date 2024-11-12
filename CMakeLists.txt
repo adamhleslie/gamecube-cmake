@@ -36,6 +36,9 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 # Set to ON when target system is Wii
 set(WII OFF)
 
+# Set to ON when USBGekko is used (for using the db library which allow user to use their USBGekko as a GDBStub)
+set(GEKKO OFF)
+
 # TEMP HACK: Local project contains devkitpro config package instead of it being found in DEVKITPRO install location
 set(devkitpro_ROOT "${CMAKE_SOURCE_DIR}/cmake/devkitpro")
 find_package(devkitpro CONFIG REQUIRED)
@@ -44,6 +47,9 @@ find_package(devkitpro CONFIG REQUIRED)
 set(warning_flags "-Winline" "-Wall" "-Wextra")
 set(cpp_flags "-fno-rtti" "-fno-exceptions")
 set(debug_flags "-O0" "-g" "-DDEBUG")
+if(GEKKO)
+    set(debug_flags ${debug_flags} "-DGEKKO")
+endif()
 set(release_flags "-O3" "-fomit-frame-pointer" "-ffast-math")
 add_compile_options(
         ${warning_flags}
