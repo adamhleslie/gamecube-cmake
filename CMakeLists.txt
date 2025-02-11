@@ -46,10 +46,7 @@ find_package(devkitpro CONFIG REQUIRED)
 # Global Compiler Flags
 set(warning_flags "-Winline" "-Wall" "-Wextra")
 set(cpp_flags "-fno-rtti" "-fno-exceptions")
-set(debug_flags "-O0" "-g" "-DDEBUG")
-if(GEKKO)
-    set(debug_flags ${debug_flags} "-DGEKKO")
-endif()
+set(debug_flags "-O0" "-g")
 set(release_flags "-O3" "-fomit-frame-pointer" "-ffast-math")
 add_compile_options(
         ${warning_flags}
@@ -62,6 +59,11 @@ add_link_options(
         "$<$<COMPILE_LANGUAGE:CXX>:${cpp_flags}>"
         "$<$<CONFIG:Debug>:${debug_flags}>"
         "$<$<CONFIG:Release>:${release_flags}>"
+)
+
+set(debug_definitions "DEBUG" "$<$<BOOL:${GEKKO}>:GEKKO>") # TODO: Determine if GEKKO should come from platform as it currently does (devkitpro-gamecube.cmake / devkitpro-wii.cmake)
+add_compile_definitions(
+        "$<$<CONFIG:Debug>:${debug_definitions}>"
 )
 
 # Defines assets_bin2s

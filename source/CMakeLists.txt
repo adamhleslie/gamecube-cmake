@@ -3,32 +3,8 @@ add_executable(source_executable
         gxsprites.c
 )
 
-if(${WII})
-    message(STATUS "Setting up Wii target...")
-    if(GEKKO)
-        target_link_libraries(source_executable
-                PRIVATE devkitpro::wii
-                PRIVATE devkitpro::libogc::wii::db
-                PRIVATE devkitpro::libogc::wii::ogc
-        )
-    else()
-        target_link_libraries(source_executable
-                PRIVATE devkitpro::wii
-                PRIVATE devkitpro::libogc::wii::ogc
-        )
-    endif()
-else()
-    message(STATUS "Setting up Gamecube target...")
-    if(GEKKO)
-        target_link_libraries(source_executable
-                PRIVATE devkitpro::gamecube
-                PRIVATE devkitpro::libogc::gamecube::db
-                PRIVATE devkitpro::libogc::gamecube::ogc
-        )
-    else()
-        target_link_libraries(source_executable
-                PRIVATE devkitpro::gamecube
-                PRIVATE devkitpro::libogc::gamecube::ogc
-        )
-    endif()
-endif()
+target_link_libraries(source_executable
+        PRIVATE "devkitpro::$<IF:$<BOOL:${WII}>,wii,gamecube>"
+        PRIVATE "devkitpro::libogc::$<IF:$<BOOL:${WII}>,wii,gamecube>::ogc"
+        PRIVATE "$<$<BOOL:${GEKKO}>:devkitpro::libogc::$<IF:$<BOOL:${WII}>,wii,gamecube>::db>"
+)
