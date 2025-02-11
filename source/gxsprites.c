@@ -13,8 +13,8 @@
 
 #include <ogc/tpl.h>
 
-#include "textures_tpl.h"
-#include "textures.h"
+#include "textures/texture_test1/textures_1.h"
+#include "textures/texture_test1/textures_1_tpl.h""
 
 #define DEFAULT_FIFO_SIZE	(256*1024)
 
@@ -115,7 +115,7 @@ int main( int argc, char **argv ){
 	GX_InvalidateTexAll();
 
 	TPLFile spriteTPL;
-	TPL_OpenTPLFromMemory(&spriteTPL, (void *)textures_tpl,textures_tpl_size);
+	TPL_OpenTPLFromMemory(&spriteTPL, (void *)textures_1_tpl,textures_1_tpl_size);
 	TPL_GetTexture(&spriteTPL,ballsprites,&texObj);
 
 	GX_LoadTexObj(&texObj, GX_TEXMAP0);
