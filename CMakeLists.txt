@@ -66,11 +66,32 @@ add_compile_definitions(
         "$<$<CONFIG:Debug>:${debug_definitions}>"
 )
 
-# Defines assets_bin2s
-add_subdirectory(assets)
+# ASSETS #
+set(scf_files
+        textures/texture_test1/textures_1.scf
+        textures/texture_test2/textures_2.scf
+        textures/textures.scf
+)
+devkitpro_add_gxtexconv(assets_gxtexconv "${scf_files}" "assets" "")
+get_target_property(gxtexconv_files assets_gxtexconv DEVKITPRO_GXTEXCONV_TPL_FILES)
 
-# Defines source_executable
-add_subdirectory(source)
+# bin2s - Binary Files
+devkitpro_add_bin2s(assets_bin2s "${gxtexconv_files}" "${CMAKE_CURRENT_BINARY_DIR}" "")
+add_dependencies(assets_bin2s assets_gxtexconv)
+target_link_libraries(assets_bin2s INTERFACE assets_gxtexconv)
+target_link_libraries(assets_bin2s PRIVATE "devkitpro::$<IF:$<BOOL:${WII}>,wii,gamecube>")
+
+# SOURCE #
+add_executable(source_executable
+        source/template.c
+        source/gxsprites.c
+)
+
+target_link_libraries(source_executable
+        PRIVATE "devkitpro::$<IF:$<BOOL:${WII}>,wii,gamecube>"
+        PRIVATE "devkitpro::libogc::$<IF:$<BOOL:${WII}>,wii,gamecube>::ogc"
+        PRIVATE "$<$<BOOL:${GEKKO}>:devkitpro::libogc::$<IF:$<BOOL:${WII}>,wii,gamecube>::db>"
+)
 target_link_libraries(source_executable PUBLIC assets_bin2s)
 
 # elf2dol - .dol executable
