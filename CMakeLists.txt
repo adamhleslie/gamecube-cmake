@@ -88,9 +88,9 @@ add_executable(source_executable
 )
 
 target_link_libraries(source_executable
+        PRIVATE "$<$<BOOL:${GEKKO}>:devkitpro::libogc::$<IF:$<BOOL:${WII}>,wii,gamecube>::db>" # db library must be linked first (see https://wiibrew.org/wiki/Debugging)
         PRIVATE "devkitpro::$<IF:$<BOOL:${WII}>,wii,gamecube>"
         PRIVATE "devkitpro::libogc::$<IF:$<BOOL:${WII}>,wii,gamecube>::ogc"
-        PRIVATE "$<$<BOOL:${GEKKO}>:devkitpro::libogc::$<IF:$<BOOL:${WII}>,wii,gamecube>::db>"
 )
 target_link_libraries(source_executable PUBLIC assets_bin2s)
 
