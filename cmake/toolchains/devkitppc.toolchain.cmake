@@ -1,35 +1,29 @@
-# Target platform to build for an embedded system without an OS
-set(CMAKE_SYSTEM_NAME "Generic")
-set(CMAKE_SYSTEM_VERSION 1)
+# shared toolchain file
+include("${CMAKE_CURRENT_LIST_DIR}/shared.toolchain.cmake")
 
-# Target architecture to build for
+# Target platform and architecture
+set(CMAKE_SYSTEM_NAME "Generic") # embedded system without an OS
+set(CMAKE_SYSTEM_VERSION 1)
 set(CMAKE_SYSTEM_PROCESSOR "ppc")
 
-# Set up devkitPro variable
-if(NOT DEFINED DEVKITPRO)
-    if(DEFINED ENV{DEVKITPRO})
-        set(DEVKITPRO $ENV{DEVKITPRO})
-        message(STATUS "Setting DEVKITPRO from environment: ${DEVKITPRO}")
-    elseif(EXISTS "/opt/devkitpro")
-        set(DEVKITPRO "/opt/devkitpro")
-        message(STATUS "Setting DEVKITPRO to default location: ${DEVKITPRO}")
-    else()
-        message(FATAL_ERROR "DEVKITPRO not valid: Default location \"/opt/devkitpro\" does not exist, and DEVKITPRO not set in environment")
-    endif()
-endif()
-
-list(APPEND CMAKE_FIND_ROOT_PATH
+# Add find_... function paths for cross-compilation
+list(APPEND CMAKE_SYSTEM_PREFIX_PATH
         "${DEVKITPRO}/devkitPPC"
+        "${DEVKITPRO}/devkitPPC/powerpc-eabi"
+        "${DEVKITPRO}/portlibs/ppc"
+        "${DEVKITPRO}/tools"
 )
 
-# Find core compilation programs
-set(prefix "powerpc-eabi-")
-find_program(CMAKE_ASM_COMPILER "${prefix}gcc"      REQUIRED)
-find_program(CMAKE_C_COMPILER   "${prefix}gcc"      REQUIRED)
-find_program(CMAKE_CXX_COMPILER "${prefix}g++"      REQUIRED)
-find_program(CMAKE_OBJCOPY      "${prefix}objcopy"  REQUIRED)
-find_program(CMAKE_OBJDUMP      "${prefix}objdump"  REQUIRED)
-find_program(CMAKE_LINKER       "${prefix}ld"       REQUIRED)
-find_program(CMAKE_AR           "${prefix}ar"       REQUIRED)
-find_program(CMAKE_RANLIB       "${prefix}ranlib"   REQUIRED)
-find_program(CMAKE_STRIP        "${prefix}strip"    REQUIRED)
+# Find core compilation programs based on architecture triplet
+set(triplet "powerpc-eabi")
+set(hint "${DEVKITPRO}/devkitPPC/bin")
+find_program(CMAKE_ASM_COMPILER "${triplet}-gcc"      HINTS "${hint}" REQUIRED)
+find_program(CMAKE_C_COMPILER   "${triplet}-gcc"      HINTS "${hint}" REQUIRED)
+find_program(CMAKE_CXX_COMPILER "${triplet}-g++"      HINTS "${hint}" REQUIRED)
+find_program(CMAKE_LINKER       "${triplet}-ld"       HINTS "${hint}" REQUIRED)
+find_program(CMAKE_AR           "${triplet}-ar"       HINTS "${hint}" REQUIRED)
+find_program(CMAKE_RANLIB       "${triplet}-ranlib"   HINTS "${hint}" REQUIRED)
+find_program(CMAKE_STRIP        "${triplet}-strip"    HINTS "${hint}" REQUIRED)
+find_program(CMAKE_OBJCOPY      "${triplet}-objcopy"  HINTS "${hint}" REQUIRED)
+find_program(CMAKE_OBJDUMP      "${triplet}-objdump"  HINTS "${hint}" REQUIRED)
+find_program(CMAKE_NM           "${triplet}-nm"       HINTS "${hint}" REQUIRED)
