@@ -61,7 +61,7 @@ add_link_options(
         "$<$<CONFIG:Release>:${release_flags}>"
 )
 
-set(debug_definitions "DEBUG" "$<$<BOOL:${GEKKO}>:GEKKO>") # TODO: Determine if GEKKO should come from platform as it currently does (devkitpro-gamecube.cmake / devkitpro-wii.cmake)
+set(debug_definitions "DEBUG" "$<$<BOOL:${GEKKO}>:GEKKO>") # TODO: Determine if GEKKO should come from platform as it currently does (dkp-gamecube.cmake / dkp-wii.cmake)
 add_compile_definitions(
         "$<$<CONFIG:Debug>:${debug_definitions}>"
 )
@@ -72,14 +72,14 @@ set(scf_files
         textures/texture_test2/textures_2.scf
         textures/textures.scf
 )
-devkitpro_add_gxtexconv(assets_gxtexconv "${scf_files}" "assets" "")
-get_target_property(gxtexconv_files assets_gxtexconv DEVKITPRO_GXTEXCONV_TPL_FILES)
+dkp_add_gxtexconv(assets_gxtexconv "${scf_files}" "assets" "")
+get_target_property(gxtexconv_files assets_gxtexconv DKP_GXTEXCONV_TPL_FILES)
 
 # bin2s - Binary Files
-devkitpro_add_bin2s(assets_bin2s "${gxtexconv_files}" "${CMAKE_CURRENT_BINARY_DIR}" "")
+dkp_add_bin2s(assets_bin2s "${gxtexconv_files}" "${CMAKE_CURRENT_BINARY_DIR}" "")
 add_dependencies(assets_bin2s assets_gxtexconv)
 target_link_libraries(assets_bin2s INTERFACE assets_gxtexconv)
-target_link_libraries(assets_bin2s PRIVATE "devkitpro::$<IF:$<BOOL:${WII}>,wii,gamecube>")
+target_link_libraries(assets_bin2s PRIVATE "dkp::$<IF:$<BOOL:${WII}>,wii,gamecube>")
 
 # SOURCE #
 add_executable(source_executable
@@ -88,11 +88,11 @@ add_executable(source_executable
 )
 
 target_link_libraries(source_executable
-        PRIVATE "$<$<BOOL:${GEKKO}>:devkitpro::libogc::$<IF:$<BOOL:${WII}>,wii,gamecube>::db>" # db library must be linked first (see https://wiibrew.org/wiki/Debugging)
-        PRIVATE "devkitpro::$<IF:$<BOOL:${WII}>,wii,gamecube>"
-        PRIVATE "devkitpro::libogc::$<IF:$<BOOL:${WII}>,wii,gamecube>::ogc"
+        PRIVATE "$<$<BOOL:${GEKKO}>:dkp::libogc::$<IF:$<BOOL:${WII}>,wii,gamecube>::db>" # db library must be linked first (see https://wiibrew.org/wiki/Debugging)
+        PRIVATE "dkp::$<IF:$<BOOL:${WII}>,wii,gamecube>"
+        PRIVATE "dkp::libogc::$<IF:$<BOOL:${WII}>,wii,gamecube>::ogc"
 )
 target_link_libraries(source_executable PUBLIC assets_bin2s)
 
 # elf2dol - .dol executable
-devkitpro_add_elf2dol("${PROJECT_NAME}_dol" "${PROJECT_NAME}.dol" $<TARGET_FILE:source_executable> TRUE)
+dkp_add_elf2dol("${PROJECT_NAME}_dol" "${PROJECT_NAME}.dol" $<TARGET_FILE:source_executable> TRUE)
