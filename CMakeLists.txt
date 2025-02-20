@@ -34,7 +34,11 @@ project("$ENV{PROJECT}" LANGUAGES CXX C ASM)
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
 # Set to ON when target system is Wii
-set(WII OFF)
+if("${CMAKE_SYSTEM_NAME}" STREQUAL "NintendoWii")
+    set(WII ON)
+else()
+    set(WII OFF)
+endif()
 
 # Set to ON when USBGekko is used (for using the db library which allow user to use their USBGekko as a GDBStub)
 set(GEKKO OFF)
