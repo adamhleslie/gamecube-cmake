@@ -12,8 +12,6 @@ endif()
 
 # Log active toolchain
 message(STATUS "Using toolchain file: ${CMAKE_TOOLCHAIN_FILE}")
-message(STATUS "Using C compiler: " ${CMAKE_C_COMPILER})
-message(STATUS "Using C++ compiler: " ${CMAKE_CXX_COMPILER})
 
 # PROJECT #
 if(NOT DEFINED ENV{PROJECT})
@@ -21,14 +19,10 @@ if(NOT DEFINED ENV{PROJECT})
 endif()
 project("$ENV{PROJECT}" LANGUAGES CXX C ASM)
 
-# Enable the next line to log target info
-#set(CMAKE_MESSAGE_LOG_LEVEL VERBOSE)
-
-# Enable the next line to see the actual commands run when building etc.
-#set(CMAKE_VERBOSE_MAKEFILE ON)
-
-# Enable the next line for debugging find commands
-#set(CMAKE_FIND_DEBUG_MODE ON)
+# Debugging variables:
+#set(CMAKE_MESSAGE_LOG_LEVEL VERBOSE) # Log target info
+#set(CMAKE_VERBOSE_MAKEFILE ON) # Log actual commands run when building
+#set(CMAKE_FIND_DEBUG_MODE ON) # Log debugging info for find commands
 
 # Set the default search path for modules when using include / find_package
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
@@ -43,26 +37,32 @@ endif()
 # Set to ON when USBGekko is used (for using the db library which allow user to use their USBGekko as a GDBStub)
 set(GEKKO OFF)
 
-# TEMP HACK: Local project contains devkitpro config package instead of it being found in DEVKITPRO install location
+# Local project contains devkitpro config package
 set(devkitpro_ROOT "${CMAKE_SOURCE_DIR}/cmake/devkitpro")
 find_package(devkitpro CONFIG REQUIRED)
 
 # Global Compiler Flags
 set(warning_flags "-Winline" "-Wall" "-Wextra")
 set(cpp_flags "-fno-rtti" "-fno-exceptions")
-set(debug_flags "-O0" "-g")
+set(debug_flags "-g" "-O0")
+set(minSizeRel_flags "-g" "-Oz")
 set(release_flags "-O3" "-fomit-frame-pointer" "-ffast-math")
+set(releaseWithDebInfo_flags "-g" ${release_flags})
 add_compile_options(
         ${warning_flags}
         "$<$<COMPILE_LANGUAGE:CXX>:${cpp_flags}>"
         "$<$<CONFIG:Debug>:${debug_flags}>"
+        "$<$<CONFIG:MinSizeRel>:${minSizeRel_flags}>"
         "$<$<CONFIG:Release>:${release_flags}>"
+        "$<$<CONFIG:RelWithDebInfo>:${releaseWithDebInfo_flags}>"
 )
 add_link_options(
         ${warning_flags}
         "$<$<COMPILE_LANGUAGE:CXX>:${cpp_flags}>"
         "$<$<CONFIG:Debug>:${debug_flags}>"
+        "$<$<CONFIG:MinSizeRel>:${minSizeRel_flags}>"
         "$<$<CONFIG:Release>:${release_flags}>"
+        "$<$<CONFIG:RelWithDebInfo>:${releaseWithDebInfo_flags}>"
 )
 
 set(debug_definitions "DEBUG" "$<$<BOOL:${GEKKO}>:GEKKO>") # TODO: Determine if GEKKO should come from platform as it currently does (dkp-gamecube.cmake / dkp-wii.cmake)
