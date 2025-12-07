@@ -64,7 +64,7 @@ pipeline {
                 """)
 
                 // Compress build outputs using tar pipeline step, and automatically archive
-                zip(zipFile: 'archive/artifacts.zip',
+                tar(file: 'archive/artifacts.tar.gz',
                     archive: true,
                     compress: true,
                     dir: 'build/',
