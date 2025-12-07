@@ -44,7 +44,7 @@ pipeline {
                     installation: 'InSearchPath',
                     sourceDir: 'project',
                     buildDir: 'build',
-                    cmakeArgs: '-DCMAKE_TOOLCHAIN_FILE=project/cmake/devkitpro/toolchains/gamecube.toolchain.cmake',
+                    cmakeArgs: '-DCMAKE_TOOLCHAIN_FILE=cmake/devkitpro/toolchains/gamecube.toolchain.cmake',
                     cleanBuild: params.CLEAN_BUILD,
                     generator: 'Unix Makefiles',
                     steps: [[withCmake: true]]
