@@ -5,28 +5,28 @@
       <configuration PROFILE_NAME="GameCube_Debug" ENABLED="true" GENERATION_DIR="out/gamecube/debug" CONFIG_NAME="Debug" GENERATION_OPTIONS="-DCMAKE_TOOLCHAIN_FILE=cmake/devkitpro/toolchains/gamecube.toolchain.cmake -DCMAKE_BUILD_TYPE=Debug">
         <ADDITIONAL_GENERATION_ENVIRONMENT>
           <envs>
-            <env name="PROJECT" value="Template" />
+            <env name="PROJECT_NAME" value="Template" />
           </envs>
         </ADDITIONAL_GENERATION_ENVIRONMENT>
       </configuration>
       <configuration PROFILE_NAME="GameCube_RelWithDebInfo" ENABLED="true" GENERATION_DIR="out/gamecube/release" CONFIG_NAME="RelWithDebInfo" GENERATION_OPTIONS="-DCMAKE_TOOLCHAIN_FILE=cmake/devkitpro/toolchains/gamecube.toolchain.cmake -DCMAKE_BUILD_TYPE=Release">
         <ADDITIONAL_GENERATION_ENVIRONMENT>
           <envs>
-            <env name="PROJECT" value="Template" />
+            <env name="PROJECT_NAME" value="Template" />
           </envs>
         </ADDITIONAL_GENERATION_ENVIRONMENT>
       </configuration>
       <configuration PROFILE_NAME="Wii_Debug" ENABLED="true" GENERATION_DIR="out/wii/debug" CONFIG_NAME="Debug" GENERATION_OPTIONS="-DCMAKE_TOOLCHAIN_FILE=cmake/devkitpro/toolchains/wii.toolchain.cmake -DCMAKE_BUILD_TYPE=Debug">
         <ADDITIONAL_GENERATION_ENVIRONMENT>
           <envs>
-            <env name="PROJECT" value="Template" />
+            <env name="PROJECT_NAME" value="Template" />
           </envs>
         </ADDITIONAL_GENERATION_ENVIRONMENT>
       </configuration>
       <configuration PROFILE_NAME="Wii_RelWithDebInfo" ENABLED="true" GENERATION_DIR="out/wii/release" CONFIG_NAME="RelWithDebInfo" GENERATION_OPTIONS="-DCMAKE_TOOLCHAIN_FILE=cmake/devkitpro/toolchains/wii.toolchain.cmake -DCMAKE_BUILD_TYPE=Release">
         <ADDITIONAL_GENERATION_ENVIRONMENT>
           <envs>
-            <env name="PROJECT" value="Template" />
+            <env name="PROJECT_NAME" value="Template" />
           </envs>
         </ADDITIONAL_GENERATION_ENVIRONMENT>
       </configuration>

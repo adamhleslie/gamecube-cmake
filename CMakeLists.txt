@@ -14,10 +14,10 @@ endif()
 message(STATUS "Using toolchain file: ${CMAKE_TOOLCHAIN_FILE}")
 
 # PROJECT #
-if(NOT DEFINED ENV{PROJECT})
-    message(FATAL_ERROR "Please set PROJECT in your environment")
+if(NOT DEFINED ENV{PROJECT_NAME})
+    message(FATAL_ERROR "Please set PROJECT_NAME in your environment")
 endif()
-project("$ENV{PROJECT}" LANGUAGES CXX C ASM)
+project("$ENV{PROJECT_NAME}" LANGUAGES CXX C ASM)
 
 # Debugging variables:
 #set(CMAKE_MESSAGE_LOG_LEVEL VERBOSE) # Log target info
