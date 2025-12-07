@@ -27,7 +27,7 @@ project("$ENV{PROJECT}" LANGUAGES CXX C ASM)
 # Set the default search path for modules when using include / find_package
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
-# Set to ON when target system is Wii
+# Set to ON when target system is Wii - CMAKE_SYSTEM_NAME is set by toolchain files
 if("${CMAKE_SYSTEM_NAME}" STREQUAL "NintendoWii")
     set(WII ON)
 else()
