@@ -7,6 +7,10 @@ pipeline {
 		    disableConcurrentBuilds()
     }
 
+    parameters {
+        booleanParam(name: 'CLEAN_BUILD', defaultValue: false, description: 'When true, will do a clean cmake build.')
+    }
+
     stages {
         // If using an Inline Pipeline Script (not Pipeline from SCM), scm must be set up manually
         // Uncomment the following and remove the checkoutToSubdirectory option above
@@ -31,19 +35,15 @@ pipeline {
                 }
             }
             steps {
-                // CMake - Configure
+                // CMake - Configure and Build
                 cmakeBuild(
-                    sourceDir: '/workspace/project',
-                    buildDir: '/workspace/build',
-                    cmakeArgs: '-DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/GameCube.cmake',
-                    generator: 'Unix Makefiles'
-                )
-
-                // CMake - Build
-                cmakeBuild(
-                    buildDir: '/workspace/build',
-                    buildType: 'Release',
-                    parallel: true
+                    installation: "InSearchPath",
+                    sourceDir: 'project',
+                    buildDir: 'build',
+                    cmakeArgs: '-DCMAKE_TOOLCHAIN_FILE=project/cmake/devkitpro/toolchains/gamecube.toolchain.cmake',
+                    cleanBuild: params.CLEAN_BUILD,
+                    generator: 'Unix Makefiles',
+                    steps: [[withCmake: true]]
                 )
             }
         }
