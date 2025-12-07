@@ -55,6 +55,7 @@ pipeline {
         stage('Archive') {
             steps {
                 // Create version file using writeFile with Git environment variables
+                // TODO: Fix this spacing:
                 writeFile(file: 'build/version.txt', text: """
                     Git Commit: ${env.GIT_COMMIT ?: 'unknown'}
                     Git Branch: ${env.GIT_BRANCH ?: 'unknown'}
@@ -63,7 +64,7 @@ pipeline {
                 """)
 
                 // Compress build outputs using tar pipeline step, and automatically archive
-                tar(file: 'archive/artifacts.tar.gz',
+                zip(zipFile: 'archive/artifacts.zip',
                     archive: true,
                     compress: true,
                     dir: 'build/',
