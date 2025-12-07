@@ -36,12 +36,12 @@ pipeline {
                 }
             }
             environment {
-                PROJECT_NAME = params.PROJECT_NAME
+                PROJECT_NAME = "$params.PROJECT_NAME"
             }
             steps {
                 // CMake - Configure and Build
                 cmakeBuild(
-                    installation: "InSearchPath",
+                    installation: 'InSearchPath',
                     sourceDir: 'project',
                     buildDir: 'build',
                     cmakeArgs: '-DCMAKE_TOOLCHAIN_FILE=project/cmake/devkitpro/toolchains/gamecube.toolchain.cmake',
