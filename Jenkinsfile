@@ -8,7 +8,7 @@ pipeline {
     }
 
     parameters {
-        string(name: 'PROJECT_NAME', defaultValue: $env.JOB_NAME, description: 'Name of project to be passed into cmake build.')
+        string(name: 'PROJECT_NAME', defaultValue: env.JOB_NAME, description: 'Name of project to be passed into cmake build.')
         booleanParam(name: 'CLEAN_BUILD', defaultValue: false, description: 'When true, will do a clean cmake build.')
     }
 
