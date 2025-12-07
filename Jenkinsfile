@@ -1,28 +1,19 @@
-// REQUIREMENT: This pipeline uses 'agent any' with 'reuseNode true' for Docker stages
-// This should work in both single-node and multi-node setups by keeping stages on the same node
 pipeline {
     agent any
     options {
-		    checkoutToSubdirectory('project')
-		    disableConcurrentBuilds()
+        checkoutToSubdirectory('project')
+        disableConcurrentBuilds()
     }
 
     parameters {
         string(name: 'PROJECT_NAME', defaultValue: env.JOB_NAME, description: 'Name of project to be passed into cmake build.')
+        string(name: 'GENERATOR', defaultValue: 'Unix Makefiles', description: 'Name of the cmake generator to use.')
+        string(name: 'TOOLCHAIN_FILE', defaultValue: 'cmake/devkitpro/toolchains/gamecube.toolchain.cmake', description: 'Name of the toolchain file to be used (CMAKE_TOOLCHAIN_FILE).')
         booleanParam(name: 'CLEAN_BUILD', defaultValue: false, description: 'When true, will do a clean cmake build.')
     }
 
     stages {
-        // If using an Inline Pipeline Script (not Pipeline from SCM), scm must be set up manually
-        // Uncomment the following and remove the checkoutToSubdirectory option above
-        // stage('Checkout') {
-        //     steps {
-        //         dir('project') {
-        //             checkout scmGit(...)
-        //         }
-        //     }
-        // }
-
+        // Note: If using an Inline Pipeline Script (not "Pipeline from SCM"), scm must be set up manually
         stage('Build') {
             agent {
                 docker {
@@ -44,9 +35,9 @@ pipeline {
                     installation: 'InSearchPath',
                     sourceDir: 'project',
                     buildDir: 'build',
-                    cmakeArgs: '-DCMAKE_TOOLCHAIN_FILE=cmake/devkitpro/toolchains/gamecube.toolchain.cmake',
+                    cmakeArgs: "-DCMAKE_TOOLCHAIN_FILE=$params.TOOLCHAIN_FILE",
                     cleanBuild: params.CLEAN_BUILD,
-                    generator: 'Unix Makefiles',
+                    generator: params.GENERATOR,
                     steps: [[withCmake: true]]
                 )
             }
