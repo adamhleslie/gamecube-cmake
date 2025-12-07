@@ -36,6 +36,10 @@ pipeline {
                 }
             }
             steps {
+                environment {
+                    PROJECT_NAME = params.PROJECT_NAME
+                }
+
                 // CMake - Configure and Build
                 cmakeBuild(
                     installation: "InSearchPath",
