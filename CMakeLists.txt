@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.20.0)
+cmake_minimum_required(VERSION 3.25.0)
 
 # Enable new optimized variable evaluation
 if(POLICY CMP0053)
@@ -90,6 +90,7 @@ add_executable(source_executable
         source/template.c
         source/gxsprites.c
 )
+dkp_target_generate_symbol_table(source_executable)
 
 target_link_libraries(source_executable
         PRIVATE "$<$<BOOL:${GEKKO}>:dkp::libogc::$<IF:$<BOOL:${WII}>,wii,gamecube>::db>" # db library must be linked first (see https://wiibrew.org/wiki/Debugging)
