@@ -34,9 +34,6 @@ else()
     set(WII OFF)
 endif()
 
-# Set to ON when USBGekko is used (for using the db library which allow user to use their USBGekko as a GDBStub)
-set(GEKKO OFF)
-
 # Local project contains devkitpro config package
 set(devkitpro_ROOT "${CMAKE_SOURCE_DIR}/cmake/devkitpro")
 find_package(devkitpro CONFIG REQUIRED)
@@ -49,32 +46,27 @@ set(minSizeRel_flags "-g" "-Oz")
 set(release_flags "-O3" "-fomit-frame-pointer" "-ffast-math")
 set(releaseWithDebInfo_flags "-g" ${release_flags})
 add_compile_options(
-        ${warning_flags}
-        "$<$<COMPILE_LANGUAGE:CXX>:${cpp_flags}>"
-        "$<$<CONFIG:Debug>:${debug_flags}>"
-        "$<$<CONFIG:MinSizeRel>:${minSizeRel_flags}>"
-        "$<$<CONFIG:Release>:${release_flags}>"
-        "$<$<CONFIG:RelWithDebInfo>:${releaseWithDebInfo_flags}>"
+    ${warning_flags}
+    "$<$<COMPILE_LANGUAGE:CXX>:${cpp_flags}>"
+    "$<$<CONFIG:Debug>:${debug_flags}>"
+    "$<$<CONFIG:MinSizeRel>:${minSizeRel_flags}>"
+    "$<$<CONFIG:Release>:${release_flags}>"
+    "$<$<CONFIG:RelWithDebInfo>:${releaseWithDebInfo_flags}>"
 )
 add_link_options(
-        ${warning_flags}
-        "$<$<COMPILE_LANGUAGE:CXX>:${cpp_flags}>"
-        "$<$<CONFIG:Debug>:${debug_flags}>"
-        "$<$<CONFIG:MinSizeRel>:${minSizeRel_flags}>"
-        "$<$<CONFIG:Release>:${release_flags}>"
-        "$<$<CONFIG:RelWithDebInfo>:${releaseWithDebInfo_flags}>"
-)
-
-set(debug_definitions "DEBUG" "$<$<BOOL:${GEKKO}>:GEKKO>") # TODO: Determine if GEKKO should come from platform as it currently does (dkp-gamecube.cmake / dkp-wii.cmake)
-add_compile_definitions(
-        "$<$<CONFIG:Debug>:${debug_definitions}>"
+    ${warning_flags}
+    "$<$<COMPILE_LANGUAGE:CXX>:${cpp_flags}>"
+    "$<$<CONFIG:Debug>:${debug_flags}>"
+    "$<$<CONFIG:MinSizeRel>:${minSizeRel_flags}>"
+    "$<$<CONFIG:Release>:${release_flags}>"
+    "$<$<CONFIG:RelWithDebInfo>:${releaseWithDebInfo_flags}>"
 )
 
 # ASSETS #
 set(scf_files
-        textures/texture_test1/textures_1.scf
-        textures/texture_test2/textures_2.scf
-        textures/textures.scf
+    textures/texture_test1/textures_1.scf
+    textures/texture_test2/textures_2.scf
+    textures/textures.scf
 )
 dkp_add_gxtexconv(assets_gxtexconv "${scf_files}" "assets" "")
 get_target_property(gxtexconv_files assets_gxtexconv DKP_GXTEXCONV_TPL_FILES)
@@ -87,15 +79,15 @@ target_link_libraries(assets_bin2s PRIVATE "dkp::$<IF:$<BOOL:${WII}>,wii,gamecub
 
 # SOURCE #
 add_executable(source_executable
-        source/template.c
-        source/gxsprites.c
+    source/template.c
+    source/gxsprites.c
 )
 dkp_target_generate_symbol_table(source_executable)
 
 target_link_libraries(source_executable
-        PRIVATE "$<$<BOOL:${GEKKO}>:dkp::libogc::$<IF:$<BOOL:${WII}>,wii,gamecube>::db>" # db library must be linked first (see https://wiibrew.org/wiki/Debugging)
-        PRIVATE "dkp::$<IF:$<BOOL:${WII}>,wii,gamecube>"
-        PRIVATE "dkp::libogc::$<IF:$<BOOL:${WII}>,wii,gamecube>::ogc"
+    PRIVATE "$<$<CONFIG:Debug,RelWithDebInfo>:dkp::libogc::$<IF:$<BOOL:${WII}>,wii,gamecube>::db>" # Note: db library must be linked first (see https://wiibrew.org/wiki/Debugging)
+    PRIVATE "dkp::$<IF:$<BOOL:${WII}>,wii,gamecube>"
+    PRIVATE "dkp::libogc::$<IF:$<BOOL:${WII}>,wii,gamecube>::ogc"
 )
 target_link_libraries(source_executable PUBLIC assets_bin2s)
 
