@@ -16,8 +16,8 @@ pipeline {
         // Note: If using an Inline Pipeline Script (not "Pipeline from SCM"), scm must be set up manually
         stage('Build') {
             agent {
-                docker {
-                    image 'devkitpro/devkitppc:latest'
+                dockerfile {
+                    dir 'jenkins'
                     reuseNode true
                     args """
                         -v $WORKSPACE/project:/workspace/project:ro

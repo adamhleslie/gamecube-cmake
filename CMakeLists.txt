@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.25.0)
 
-# Enable new optimized variable evaluation
+# Enable optimized variable evaluation
 if(POLICY CMP0053)
     cmake_policy(SET CMP0053 NEW)
 endif()
@@ -36,9 +36,9 @@ endif()
 
 # Local project contains devkitpro config package
 set(devkitpro_ROOT "${CMAKE_SOURCE_DIR}/cmake/devkitpro")
-find_package(devkitpro CONFIG REQUIRED)
+find_package(devkitpro CONFIG REQUIRED COMPONENTS libogc gxtexconv bin2s elf2dol)
 
-# Global Compiler Flags
+# Global Compiler Flags (Note: compile flag and link flag generator expressions should be quoted when containing lists)
 set(warning_flags "-Winline" "-Wall" "-Wextra")
 set(cpp_flags "-fno-rtti" "-fno-exceptions")
 set(debug_flags "-g" "-O0")
@@ -55,7 +55,7 @@ add_compile_options(
 )
 add_link_options(
     ${warning_flags}
-    "$<$<COMPILE_LANGUAGE:CXX>:${cpp_flags}>"
+    "$<$<LINK_LANGUAGE:CXX>:${cpp_flags}>"
     "$<$<CONFIG:Debug>:${debug_flags}>"
     "$<$<CONFIG:MinSizeRel>:${minSizeRel_flags}>"
     "$<$<CONFIG:Release>:${release_flags}>"
@@ -64,9 +64,9 @@ add_link_options(
 
 # ASSETS #
 set(scf_files
-    textures/texture_test1/textures_1.scf
-    textures/texture_test2/textures_2.scf
-    textures/textures.scf
+    "textures/texture_test1/textures_1.scf"
+    "textures/texture_test2/textures_2.scf"
+    "textures/textures.scf"
 )
 dkp_add_gxtexconv(assets_gxtexconv "${scf_files}" "assets" "")
 get_target_property(gxtexconv_files assets_gxtexconv DKP_GXTEXCONV_TPL_FILES)
@@ -75,21 +75,21 @@ get_target_property(gxtexconv_files assets_gxtexconv DKP_GXTEXCONV_TPL_FILES)
 dkp_add_bin2s(assets_bin2s "${gxtexconv_files}" "${CMAKE_CURRENT_BINARY_DIR}" "")
 add_dependencies(assets_bin2s assets_gxtexconv)
 target_link_libraries(assets_bin2s INTERFACE assets_gxtexconv)
-target_link_libraries(assets_bin2s PRIVATE "dkp::$<IF:$<BOOL:${WII}>,wii,gamecube>")
+target_link_libraries(assets_bin2s PRIVATE dkp::$<IF:$<BOOL:${WII}>,wii,gamecube>)
 
 # SOURCE #
 add_executable(source_executable
-    source/template.c
-    source/gxsprites.c
+    "source/template.c"
+    "source/gxsprites.c"
 )
 dkp_target_generate_symbol_table(source_executable)
 
 target_link_libraries(source_executable
-    PRIVATE "$<$<CONFIG:Debug,RelWithDebInfo>:dkp::libogc::$<IF:$<BOOL:${WII}>,wii,gamecube>::db>" # Note: db library must be linked first (see https://wiibrew.org/wiki/Debugging)
-    PRIVATE "dkp::$<IF:$<BOOL:${WII}>,wii,gamecube>"
-    PRIVATE "dkp::libogc::$<IF:$<BOOL:${WII}>,wii,gamecube>::ogc"
+    PRIVATE $<$<CONFIG:Debug,RelWithDebInfo>:dkp::libogc::$<IF:$<BOOL:${WII}>,wii,gamecube>::db> # Note: db library must be linked first (see https://wiibrew.org/wiki/Debugging)
+    PRIVATE dkp::$<IF:$<BOOL:${WII}>,wii,gamecube>
+    PRIVATE dkp::libogc::$<IF:$<BOOL:${WII}>,wii,gamecube>::ogc
 )
 target_link_libraries(source_executable PUBLIC assets_bin2s)
 
 # elf2dol - .dol executable
-dkp_add_elf2dol("${PROJECT_NAME}_dol" "${PROJECT_NAME}.dol" $<TARGET_FILE:source_executable> TRUE)
+dkp_add_elf2dol("${PROJECT_NAME}_dol" "${PROJECT_NAME}.dol" "$<TARGET_FILE:source_executable>" TRUE)
