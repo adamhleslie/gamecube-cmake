@@ -17,7 +17,7 @@ pipeline {
         stage('Build') {
             agent {
                 dockerfile {
-                    dir 'jenkins'
+                    dir "$WORKSPACE/project/jenkins"
                     reuseNode true
                     args """
                         -v $WORKSPACE/project:/workspace/project:ro
