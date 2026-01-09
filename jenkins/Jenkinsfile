@@ -9,7 +9,6 @@ pipeline {
         string(name: 'PROJECT_NAME', defaultValue: env.JOB_NAME, description: 'Name of project to be passed into cmake build.')
         string(name: 'GENERATOR', defaultValue: 'Unix Makefiles', description: 'Name of the cmake generator to use.')
         string(name: 'BUILD_TYPE', defaultValue: 'Debug', description: 'The build type to be passed to CMake (CMAKE_BUILD_TYPE).')
-        string(name: 'TOOLCHAIN_FILE', defaultValue: 'cmake/devkitpro/toolchains/gamecube.toolchain.cmake', description: 'Name of the toolchain file relative to the project directory (CMAKE_TOOLCHAIN_FILE).')
         booleanParam(name: 'CLEAN_BUILD', defaultValue: false, description: 'When true, will do a clean cmake build.')
     }
 
@@ -18,13 +17,8 @@ pipeline {
         stage('Build') {
             agent {
                 dockerfile {
-                    dir "$WORKSPACE/project/jenkins"
+                    dir "project/jenkins"
                     reuseNode true
-                    args """
-                        -v $WORKSPACE/project:/workspace/project:ro
-                        -v $WORKSPACE/build:/workspace/build:rw
-                        -w /workspace
-                    """
                 }
             }
             environment {
@@ -36,7 +30,7 @@ pipeline {
                     installation: 'InSearchPath',
                     sourceDir: 'project',
                     buildDir: 'build',
-                    cmakeArgs: "-DCMAKE_TOOLCHAIN_FILE=/workspace/project/$params.TOOLCHAIN_FILE",
+                    cmakeArgs: "-DCMAKE_TOOLCHAIN_FILE=$WORKSPACE/project/cmake/devkitpro/toolchains/gamecube.toolchain.cmake",
                     cleanBuild: params.CLEAN_BUILD,
                     buildType: params.BUILD_TYPE,
                     generator: params.GENERATOR,
